@@ -8,16 +8,7 @@ Identificadores: uma letra [a-zA-Z]+, seguido de zero ou mais letras [0-9a-zA-Z]
 
 Numerais: apenas números inteiros [0-9]
 
-Operadores:
-=
-<
-==
-!=
-+
--
-*
-&&
-!
+Operadores: [=, <, ==, !=, +. -, *, &&, !]
 
 Pontuação:
 (
@@ -51,3 +42,5 @@ false
 this
 new
 null
+
+
