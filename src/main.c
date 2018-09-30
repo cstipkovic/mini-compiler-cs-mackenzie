@@ -3,13 +3,31 @@
 #include <string.h>
 
 /* Códigos das Constantes */
-#define ERROR 404;
+#define ERROR 404
 
 /* Struct do token */
 typedef struct token {
 	int name;
 	char* value;
 } TOKEN;
+
+TOKEN scanner(char text[], int *pos) {
+	TOKEN token;
+	token.name = ERROR;
+	token.value = NULL;
+
+	(*pos)--;
+
+	return token;
+}
+
+int isNumber(char number) {
+	if (number == '0' || number == '1') {
+		return 1;
+	}
+
+	return 0;
+}
 
 /* Lê o arquivo com o código proposto */
 void readFile(char text[]) {
@@ -26,14 +44,36 @@ void readFile(char text[]) {
 	}
 }
 
-TOKEN scanner(char text[], int *pos) {
-	TOKEN token;
-	token.name = ERROR;
-	token.value = NULL;
+void writeFile(char result[], int pos) {
+	int i, j, k;
+	j = 0;
+	char aux[100];
+	printf(result);
+	printf("\n\n------------");
 
-	(*pos)--;
+	for (i = 0; i < pos; i++) {
+		aux[j] = result[i];
+		j++;
 
-	return token;
+		if (result[i] == ' ') {
+			if (needValue(aux)) {
+				for (k = i + 1; result[k] != ' '; k++, i++) {
+					i++;
+				}
+			}
+
+			result[i] = '\n';
+			j = 0;
+			aux[0] = '\0';
+		}
+	}
+
+	FILE *outputFile;
+	outputFile = fopen("output.txt", "w+");
+	/*fprint(file, "")*/
+	printf(result);
+	fprintf(outputFile, result);
+	fclose(outputFile);
 }
 
 int main(int argc, const char *argv[]) {
@@ -56,7 +96,24 @@ int main(int argc, const char *argv[]) {
 
 	while (pos < strlen(inputFile)) {
 		TOKEN token = scanner(inputFile, &pos);
+		sprintf(res, "%d", token.name);
+		strcat(result, res);
+		strcat(result, " ");
+		strcpy(res, "");
+
+		if (token.value == NULL) {
+			strcat(result, token.value);
+			strcat(result, " ");
+		}
+
+		if (token.name == ERROR) {
+			printf("ERRO LEXICO\n");
+			printf("%s\n", result);
+			break;
+		}
 	}
+
+	writeFile(result, strlen(result));
 
 	return 0;
 }
