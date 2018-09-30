@@ -53,3 +53,4 @@ dkms.conf
 
 # Vim Tmp
 .*.swp
+.DS_Store
