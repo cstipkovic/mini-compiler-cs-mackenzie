@@ -42,20 +42,11 @@
 #define ASSIGNMENT       1030
 #define ERROR            404
 
-
 /* Struct do token */
 typedef struct token {
 	int name;
 	char* value;
 } TOKEN;
-
-/* Funcoes */
-int isNumber(char n);
-int isLetter(char c);
-int needValue(char aux[]);
-void readFile(char text[]) ;
-void writeFile(char result[], int pos);
-TOKEN scanner(char text[], int *pos);
 
 /* Verifica se entrada é um número - [0 - 9]*/
 int isNumber(char n) {
@@ -76,18 +67,23 @@ int isLetter(char c) {
 }
 
 /* Funcao auxiliar para definir se é um valor positivo, negativo ou um identificador*/
-int needValue(char aux[]){
+int needValue(char aux[]) {
 	int c;
+
 	c = atoi(aux);
-	if(  c == POSITIVENUMBER || c == NEGATIVENUMBER || c == IDENTIFIER) return  1;
+
+	if (c == POSITIVENUMBER || c == NEGATIVENUMBER || c == IDENTIFIER) {
+		return 1;
+	}
+
 	return 0;
 }
 
 /* Lê o arquivo com o código proposto */
 void readFile(char text[]) {
 	FILE *inputFile;
-	inputFile = fopen("../test/test-algC.txt", "r");
-	char line[400];
+	inputFile = fopen("test-algC.txt", "r");
+	char line[1000];
 
 	if (inputFile) {
 		while (fscanf(inputFile, "%s ", line) != EOF) {
@@ -125,10 +121,31 @@ void writeFile(char result[], int pos) {
 
 	FILE *outputFile;
 	outputFile = fopen("output.txt", "w+");
-	/*fprint(file, "")*/
-	printf("%s", result);
 	fprintf(outputFile, "%s", result);
 	fclose(outputFile);
+}
+
+char* getValue(char text[], int pos) {
+	char *value;
+	int i, j, count;
+
+	count = 0;
+
+	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
+		count++;
+	}
+
+	value = malloc(2 * count * sizeof(char));
+	j = 0;
+
+	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
+		value[j] = text[i - count + 1 + (2 * j)];
+		j++;
+	}
+
+	printf("Value: %s\n", value);
+
+	return value;
 }
 
 /* Retorna a saida da entrada segundo especificacao do automato*/
@@ -679,7 +696,7 @@ else return token;
 
 }
 
-int main(int argc, const char *argv[]) {
+int main(int argc, char *argv[]) {
 	int pos, i, inputSize;
 
 	inputSize = 800;
@@ -696,6 +713,7 @@ int main(int argc, const char *argv[]) {
 	strcpy(result, "");
 
 	char res[inputSize];
+
 	while (pos < strlen(inputFile)) {
 		TOKEN token = scanner(inputFile, &pos);
 		sprintf(res, "%d", token.name);
