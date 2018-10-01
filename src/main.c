@@ -513,6 +513,7 @@ TOKEN scanner(char text[], int *pos) {
     (*pos)++;
     if (isLetter(text[*pos])) goto q68;
     else if (text[*pos] == ' ') goto q69;
+    else if (text[*pos] == '=') goto q69;
     else return token;
 
     q69:
