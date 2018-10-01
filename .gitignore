@@ -54,4 +54,5 @@ dkms.conf
 # Vim Tmp
 .*.swp
 .DS_Store
-./src/main
+main
+output.txt
