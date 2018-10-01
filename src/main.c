@@ -676,21 +676,6 @@ q97:
 	(*pos)++;
 	token.name = COMMENTS;
 	return token;
-
-	/*
-q98:(*pos)++;
-else return token;
-
-q99:(*pos)++;
-else return token;
-
-q100:(*pos)++;
-else return token;
-
-q101:(*pos)++;
-else return token;
-*/
-
 }
 
 int main(int argc, char *argv[]) {
@@ -717,7 +702,6 @@ int main(int argc, char *argv[]) {
 		strcat(result, res);
 		strcat(result, "\n");
 		strcpy(res, "");
-
 
 		/* Não recebe atribuicao de valor valida resulta em SEGMENTATION FAULT */
 		/*if (token.value == NULL) {*/
