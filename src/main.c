@@ -86,7 +86,7 @@ int needValue(char aux[]){
 /* Lê o arquivo com o código proposto */
 void readFile(char text[]) {
 	FILE *inputFile;
-	inputFile = fopen("./test/test-algC.txt", "r");
+	inputFile = fopen("../test/test-algC.txt", "r");
 	char line[400];
 
 	if (inputFile) {
@@ -695,7 +695,6 @@ int main(int argc, const char *argv[]) {
     strcpy(result, "");
 
     char res[inputSize];
-
     while (pos < strlen(inputFile)) {
         TOKEN token = scanner(inputFile, &pos);
         sprintf(res, "%d", token.name);
