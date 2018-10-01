@@ -82,7 +82,7 @@ int needValue(char aux[]) {
 /* Lê o arquivo com o código proposto */
 void readFile(char text[]) {
 	FILE *inputFile;
-	inputFile = fopen("test-algC.txt", "r");
+	inputFile = fopen("./test/test-algC.txt", "r");
 	char line[400];
 
 	if (inputFile) {
@@ -720,12 +720,16 @@ int main(int argc, char *argv[]) {
 		strcat(result, res);
 		strcat(result, " ");
 		strcpy(res, "");
+/*
+ *
+ * Não recebe atribuicao de valor valida resulta em SEGMENTATION FAULT
+ *
 
 		if (token.value == NULL) {
 			strcat(result, token.value);
 			strcat(result, " ");
 		}
-
+*/
 		if (token.name == ERROR) {
 			printf("ERRO LEXICO\n");
 			printf("%s\n", result);
