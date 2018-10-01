@@ -45,10 +45,19 @@
 
 /* Struct do token */
 typedef struct token {
-	int name;
-	char* value;
+    int name;
+    char* value;
 } TOKEN;
 
+/* Funcoes */
+int isNumber(char n);
+int isLetter(char c);
+int needValue(char aux[]);
+void readFile(char text[]) ;
+void writeFile(char result[], int pos);
+TOKEN scanner(char text[], int *pos);
+
+/* Verifica se entrada é um número - [0 - 9]*/
 int isNumber(char n) {
 	if (n == '0' || n == '1' || n == '2' || n == '3' || n == '4' || n == '5' || n == '6' || n == '7' || n == '8' || n == '9') {
 		return 1;
