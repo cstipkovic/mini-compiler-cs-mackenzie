@@ -83,7 +83,7 @@ int needValue(char aux[]) {
 void readFile(char text[]) {
 	FILE *inputFile;
 	inputFile = fopen("test-algC.txt", "r");
-	char line[1000];
+	char line[400];
 
 	if (inputFile) {
 		while (fscanf(inputFile, "%s ", line) != EOF) {
