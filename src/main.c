@@ -56,7 +56,7 @@ int isNumber(char n) {
 
 	return 0;
 }
-
+/* Verifica se entrada é uma letra de A-z */
 int isLetter(char c) {
     int a = (int) c;
     if ((a > 96 && a < 123) || (a > 64 && a < 91)) {
@@ -66,6 +66,7 @@ int isLetter(char c) {
     return 0;
 }
 
+/* Funcao auxiliar para definir se é um valor positivo, negativo ou um identificador*/
 int needValue(char aux[]){
     int c;
     c = atoi(aux);
@@ -88,6 +89,7 @@ void readFile(char text[]) {
 	}
 }
 
+/* Escreve os resultados no arquivo de saida */
 void writeFile(char result[], int pos) {
 	int i, j, k;
 	j = 0;
@@ -120,6 +122,7 @@ void writeFile(char result[], int pos) {
 	fclose(outputFile);
 }
 
+/* Retorna a saida da entrada segundo especificacao do automato*/
 TOKEN scanner(char text[], int *pos) {
     TOKEN token;
     token.name = ERROR;
@@ -680,6 +683,7 @@ int main(int argc, const char *argv[]) {
     readFile(inputFile);
     char result[inputSize];
     strcpy(result, "");
+    printf()
 
     char res[inputSize];
 
