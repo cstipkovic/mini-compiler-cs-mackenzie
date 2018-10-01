@@ -683,7 +683,6 @@ int main(int argc, const char *argv[]) {
     readFile(inputFile);
     char result[inputSize];
     strcpy(result, "");
-    printf()
 
     char res[inputSize];
 
