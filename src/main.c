@@ -17,8 +17,8 @@
 #define VOID             1005
 #define IF               1006
 #define INT              1007
-#define TRUE             1008
-#define FALSE            1009
+#define TRUE_             1008
+#define FALSE_            1009
 #define ELSE             1010
 #define COMMENTS         1011
 #define DIVISION         1012
@@ -99,8 +99,6 @@ void writeFile(char result[], int pos) {
 	int i, j, k;
 	j = 0;
 	char aux[100];
-	printf("%s", result);
-	printf("\n\n------------\n\n");
 
 	for (i = 0; i < pos; i++) {
 		aux[j] = result[i];
@@ -164,7 +162,7 @@ q0:
 	else if (text[*pos] == 'p') goto q13;
 	else if (text[*pos] == 'v') goto q25;
 	else if (text[*pos] == 'i') goto q30;
-	else if (text[*pos] == 'q') goto q36;
+	else if (text[*pos] == 't') goto q36;
 	else if (text[*pos] == 'f') goto q41;
 	else if (text[*pos] == 'e') goto q47;
 	else if (isNumber(text[*pos])) goto q52;
@@ -383,7 +381,7 @@ q39:
 
 q40:
 	(*pos)++;
-	token.name = TRUE;
+	token.name = TRUE_;
 	return token;
 
 q41:
@@ -413,7 +411,7 @@ q45:
 
 q46:
 	(*pos)++;
-	token.name = FALSE;
+	token.name = FALSE_;
 	return token;
 
 q47:
@@ -530,7 +528,6 @@ q68:
 	(*pos)++;
 	if (isLetter(text[*pos])) goto q68;
 	else if (text[*pos] == ' ') goto q69;
-	else if (text[*pos] == '=') goto q69;
 	else return token;
 
 q69:
@@ -718,7 +715,7 @@ int main(int argc, char *argv[]) {
 		TOKEN token = scanner(inputFile, &pos);
 		sprintf(res, "%d", token.name);
 		strcat(result, res);
-		strcat(result, " ");
+		strcat(result, "\n");
 		strcpy(res, "");
 
 
