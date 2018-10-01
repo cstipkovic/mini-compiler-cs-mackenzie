@@ -95,7 +95,7 @@ void writeFile(char result[], int pos) {
 	j = 0;
 	char aux[100];
 	printf(result);
-	printf("\n\n------------");
+	printf("\n\n------------\n\n");
 
 	for (i = 0; i < pos; i++) {
 		aux[j] = result[i];
@@ -535,6 +535,7 @@ TOKEN scanner(char text[], int *pos) {
     q74:
     (*pos)++;
     if (text[*pos] == ' ') goto q75;
+    else if (text[*pos] == ' ') goto q76;
     else return token;
 
     q75:
