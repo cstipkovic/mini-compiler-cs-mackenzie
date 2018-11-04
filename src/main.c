@@ -229,7 +229,7 @@ void nonCOMANDO() {
 }
 
 void nonATRIBUICAO() {
-    if (token  == ASSIGNMENT) {
+    if (*token  == ASSIGNMENT) {
     	/*
     	 * SERA QUE PRECISA DE NEXT ?
     	 */
@@ -237,7 +237,6 @@ void nonATRIBUICAO() {
     	nonIDENTIFICADOR();
     	nonEXPRESSAO();
     }
-
 }
 
 void nonCHAMADA_PROCEDIMENTO() {
