@@ -672,7 +672,7 @@ void match() {
 
 void erro(char* esperado, char* encontrado) {
   printf("ERRO SINTATICO\n");
-  if (strcmp(esperado, __PROGRAMA__) == 0) {
+  if (strcmp(esperado, __PROGRAMA__) == 0) {                                                           	
     printf("Esperava o token <programa> mas encontrou %s\n", getErrorToken(encontrado));
   } else if (strcmp(esperado, __IDENTIFICADOR__) == 0) {
     printf("Esperava o token <identificador> mas encontrou %s\n", getErrorToken(encontrado));
