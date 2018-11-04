@@ -655,7 +655,7 @@ void getFirstTokent(){
 
 void match() {
 	char res[100];
-	int len; 
+	int len;
 	TOKEN token;
 	getToken(&token);
 	sprintf(res, "%d", token.nome);

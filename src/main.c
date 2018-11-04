@@ -79,19 +79,35 @@ void nonFATOR();
  * Validation functions
  */
 
-bool isRELACAO();
-bool isBOL();
-bool isINT();
-bool isIDENTIFICADOR();
-bool isDIGITO();
-bool isLETRA();
+int isRELACAO();
+int isBOL();
+int isIDENTIFICADOR();
+/*
+ * int isINT();
+ * int isDIGITO(char n);
+ * int isLETRA(char c);
+*/
 
+/*
+ * Extra functions to help at validations
+ */
+int isNumber(char n);
+int isLetter(char c);
 
 /* Struct do token */
 typedef struct token {
 	int name;
 	char* value;
 } TOKEN;
+
+
+int isRELACAO() {
+    return  0;
+}
+
+int isBOL() {
+    return 0;
+}
 
 /* Verifica se entrada é um número - [0 - 9]*/
 int isNumber(char n) {
@@ -140,7 +156,7 @@ void readFile(char text[]) {
 }
 
 /* Escreve os resultados no arquivo de saida */
-void writeFile(char result[], int pos) {
+void writeFile(char result[], int pos, char filename[]) {
 	int i, j, k;
 	j = 0;
 	char aux[100];
@@ -163,7 +179,7 @@ void writeFile(char result[], int pos) {
 	}
 
 	FILE *outputFile;
-	outputFile = fopen("output.txt", "w+");
+	outputFile = fopen(filename, "w+");
 	fprintf(outputFile, "%s", result);
 	fclose(outputFile);
 }
@@ -755,7 +771,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	writeFile(result, strlen(result));
+	writeFile(result, strlen(result), "lexical_analysis.txt");
 
 	return 0;
 }
