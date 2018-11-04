@@ -1,0 +1,158 @@
+i==10842== Memcheck, a memory error detector
+==10842== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==10842== Using Valgrind-3.15.0.GIT and LibVEX; rerun with -h for copyright info
+==10842== Command: ./main
+==10842==
+==10842== valgrind: Unrecognised instruction at address 0x10030626e.
+==10842==    at 0x10030626E: __abort (in /usr/lib/system/libsystem_c.dylib)
+==10842==    by 0x100306AF7: __stack_chk_fail (in /usr/lib/system/libsystem_c.dylib)
+==10842==    by 0x10000181F: writeFile (main.c:0)
+==10842==    by 0x3030310A37303030: ???
+==10842==    by 0x310A333230310A2F: ???
+==10842==    by 0x303330310A30302F: ???
+==10842==    by 0x30310A3832303109: ???
+==10842==    by 0xA363030310A3331: ???
+==10842==    by 0x3030310A34323030: ???
+==10842==    by 0x310A363130310A2F: ???
+==10842==    by 0x353230310A38322F: ???
+==10842==    by 0x30310A3632303109: ???
+==10842== Your program just tried to execute an instruction that Valgrind
+==10842== did not recognise.  There are two possible reasons for this.
+==10842== 1. Your program has a bug and erroneously jumped to a non-code
+==10842==    location.  If you are running Memcheck and you just saw a
+==10842==    warning about a bad jump, it's probably your program's fault.
+==10842== 2. The instruction is legitimate but Valgrind doesn't handle it,
+==10842==    i.e. it's Valgrind's fault.  If you think this is the case or
+==10842==    you are not sure, please let us know and we'll try to fix it.
+==10842== Either way, Valgrind will now raise a SIGILL signal which will
+==10842== probably kill your program.
+==10842==
+==10842== Process terminating with default action of signal 4 (SIGILL)
+==10842==  Illegal opcode at address 0x10030626E
+==10842==    at 0x10030626E: __abort (in /usr/lib/system/libsystem_c.dylib)
+==10842==    by 0x100306AF7: __stack_chk_fail (in /usr/lib/system/libsystem_c.dylib)
+==10842==    by 0x10000181F: writeFile (main.c:0)
+==10842==    by 0x3030310A37303030: ???
+==10842==    by 0x310A333230310A2F: ???
+==10842==    by 0x303330310A30302F: ???
+==10842==    by 0x30310A3832303109: ???
+==10842==    by 0xA363030310A3331: ???
+==10842==    by 0x3030310A34323030: ???
+==10842==    by 0x310A363130310A2F: ???
+==10842==    by 0x353230310A38322F: ???
+==10842==    by 0x30310A3632303109: ???
+==10842==
+==10842== HEAP SUMMARY:
+==10842==     in use at exit: 18,396 bytes in 165 blocks
+==10842==   total heap usage: 188 allocs, 23 frees, 157,916 bytes allocated
+==10842==
+==10842== 64 bytes in 1 blocks are definitely lost in loss record 19 of 43
+==10842==    at 0x1000AE6A2: calloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075BB9A: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A32B: _read_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100758A9D: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==    by 0x100758073: _objc_init (in /usr/lib/libobjc.A.dylib)
+==10842==
+==10842== 64 bytes in 1 blocks are definitely lost in loss record 20 of 43
+==10842==    at 0x1000AE6A2: calloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075BB9A: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC68: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC50: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A32B: _read_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100758A9D: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==
+==10842== 72 bytes in 3 blocks are possibly lost in loss record 21 of 43
+==10842==    at 0x1000AE6A2: calloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x1007587C2: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==    by 0x100758073: _objc_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x1001ADB34: _os_object_init (in /usr/lib/system/libdispatch.dylib)
+==10842==    by 0x1001ADB1B: libdispatch_init (in /usr/lib/system/libdispatch.dylib)
+==10842==    by 0x1000BC9C2: libSystem_initializer (in /usr/lib/libSystem.B.dylib)
+==10842==    by 0x10001BAC5: ImageLoaderMachO::doModInitFunctions(ImageLoader::LinkContext const&) (in /usr/lib/dyld)
+==10842==    by 0x10001BCF5: ImageLoaderMachO::doInitialization(ImageLoader::LinkContext const&) (in /usr/lib/dyld)
+==10842==
+==10842== 80 (32 direct, 48 indirect) bytes in 1 blocks are definitely lost in loss record 22 of 43
+==10842==    at 0x1000AE2B6: malloc_zone_malloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075AABF: NXCreateHashTableFromZone (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075AA6E: NXCreateHashTable (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A948: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A8D3: NXCreateMapTable (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759394: __sel_registerName(char const*, int, int) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759096: sel_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075898C: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==
+==10842== 144 (32 direct, 112 indirect) bytes in 1 blocks are definitely lost in loss record 25 of 43
+==10842==    at 0x1000AE2B6: malloc_zone_malloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075AA9E: NXCreateHashTableFromZone (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075AA6E: NXCreateHashTable (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A948: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A8D3: NXCreateMapTable (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759394: __sel_registerName(char const*, int, int) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759096: sel_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075898C: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==
+==10842== 192 bytes in 3 blocks are definitely lost in loss record 30 of 43
+==10842==    at 0x1000AE6A2: calloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075BB9A: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075BC68: realizeClass(objc_class*) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A32B: _read_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100758A9D: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==    by 0x100758073: _objc_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x1001ADB34: _os_object_init (in /usr/lib/system/libdispatch.dylib)
+==10842==    by 0x1001ADB1B: libdispatch_init (in /usr/lib/system/libdispatch.dylib)
+==10842==
+==10842== 4,136 (24 direct, 4,112 indirect) bytes in 1 blocks are definitely lost in loss record 43 of 43
+==10842==    at 0x1000AE2B6: malloc_zone_malloc (in /usr/local/Cellar/valgrind/HEAD-d00dd9c/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==10842==    by 0x10075A901: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075A8D3: NXCreateMapTable (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759394: __sel_registerName(char const*, int, int) (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100759096: sel_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10075898C: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x10076B4E0: map_images (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x100009C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==10842==    by 0x100009E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==10842==    by 0x10022371D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==10842==    by 0x100758073: _objc_init (in /usr/lib/libobjc.A.dylib)
+==10842==    by 0x1001ADB34: _os_object_init (in /usr/lib/system/libdispatch.dylib)
+==10842==
+==10842== LEAK SUMMARY:
+==10842==    definitely lost: 408 bytes in 8 blocks
+==10842==    indirectly lost: 6,864 bytes in 7 blocks
+==10842==      possibly lost: 72 bytes in 3 blocks
+==10842==    still reachable: 32 bytes in 1 blocks
+==10842==         suppressed: 11,020 bytes in 146 blocks
+==10842== Reachable blocks (those to which a pointer was found) are not shown.
+==10842== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10842==
+==10842== For counts of detected and suppressed errors, rerun with: -v
+==10842== ERROR SUMMARY: 7 errors from 7 contexts (suppressed: 11 from 11)
+Illegal instruction: 4

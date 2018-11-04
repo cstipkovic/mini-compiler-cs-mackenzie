@@ -49,13 +49,13 @@ char *token;
 /*
  * non-terminal functions
  */
-    /* Syntax */
+/* Syntax */
 void nonPROGRAMA();
 void nonBLOCO();
 void nonPARTE_DECLARACOE_VARIAVEIS();
 void nonPARTE_DECLARACOE_FUNCOES();
 void nonCOMANDO_COMPOSTO();
-    /* Defintions */
+/* Defintions */
 void nonDECLARACAO_VARIAVEIS();
 void nonDECLARACAO_FUNCOES();
 void nonTIPO();
@@ -63,7 +63,7 @@ void nonLISTA_IDENTIFICADORES();
 void nonIDENTIFICADOR();
 void nonPARAMETROS_FORMAIS();
 void nonPARAMETRO_FORMAL();
-    /* Commands */
+/* Commands */
 void nonCOMANDO_COMPOSTO();
 void nonCOMANDO();
 void nonATRIBUICAO();
@@ -74,7 +74,7 @@ void nonEXPRESSAO();
 void nonLISTA_PARAMETROS();
 void nonINT();
 void nonBOL();
-    /* Expressions */
+/* Expressions */
 void nonEXPRESSAO_SIMPLES();
 void nonRELACAO();
 void nonTERMO();
@@ -91,7 +91,7 @@ int isIDENTIFICADOR();
  * int isINT();          -> using function isNumber to validate it.
  * int isDIGITO(char n); -> using function isNumber to validate it.
  * int isLETRA(char c);  -> using function isLetter to validate it.
-*/
+ */
 
 /*
  * Extra functions to help at validations
@@ -103,76 +103,77 @@ void next();
 /*
  * Function implementation
  */
+
 /*
-void nonPROGRAMA(){
+   void nonPROGRAMA(){
 
-     * ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN
+ * ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN
 
-    if (token == PROGRAM) {
-        next();
-        if (token == IDENTIFIER) {
-            next();
-            if (token == BRACEOPEN) {
-                next();
-                nonBLOCO();
-            } else {
-                printf("ERROR: doesn't found block declaration");
-            }
-        } else {
-            printf("ERROR: after PROGRAM declaration an identifier is not defined");
-        }
-    } else {
-        printf("ERROR: invalid PROGRAM begin declaration");
-    }
-}
+ if (token == PROGRAM) {
+ next();
+ if (token == IDENTIFIER) {
+ next();
+ if (token == BRACEOPEN) {
+ next();
+ nonBLOCO();
+ } else {
+ printf("ERROR: doesn't found block declaration");
+ }
+ } else {
+ printf("ERROR: after PROGRAM declaration an identifier is not defined");
+ }
+ } else {
+ printf("ERROR: invalid PROGRAM begin declaration");
+ }
+ }
 
-void nonBLOCO() {
-    nonPARTE_DECLARACOE_VARIAVEIS();
-    nonPARTE_DECLARACOE_FUNCOES();
-    nonCOMANDO_COMPOSTO();
-}
+ void nonBLOCO() {
+ nonPARTE_DECLARACOE_VARIAVEIS();
+ nonPARTE_DECLARACOE_FUNCOES();
+ nonCOMANDO_COMPOSTO();
+ }
 
-void nonPARTE_DECLARACOE_VARIAVEIS() {
-    nonDECLARACAO_VARIAVEIS();
-}
+ void nonPARTE_DECLARACOE_VARIAVEIS() {
+ nonDECLARACAO_VARIAVEIS();
+ }
 
-void nonPARTE_DECLARACOE_FUNCOES() {
-    nonDECLARACAO_FUNCOES()
-}
+ void nonPARTE_DECLARACOE_FUNCOES() {
+ nonDECLARACAO_FUNCOES()
+ }
 
-void nonCOMANDO_COMPOSTO() {
+ void nonCOMANDO_COMPOSTO() {
 
 
-}
+ }
 
-void nonDECLARACAO_VARIAVEIS() {
-    if (token == INT || token == BOOLEAN) {
-        nonTIPO();
-        nonLISTA_IDENTIFICADORES();
-    }
-}
+ void nonDECLARACAO_VARIAVEIS() {
+ if (token == INT || token == BOOLEAN) {
+ nonTIPO();
+ nonLISTA_IDENTIFICADORES();
+ }
+ }
 
-void nonDECLARACAO_FUNCOES() {
+ void nonDECLARACAO_FUNCOES() {
 
-}
+ }
 
-void nonTIPO() {
+ void nonTIPO() {
 
-}
+ }
 
-void nonLISTA_IDENTIFICADORES() {
+ void nonLISTA_IDENTIFICADORES() {
 
-}
+ }
 
-void nonIDENTIFICADOR() {
+ void nonIDENTIFICADOR() {
 
-}
+ }
 
-void nonPARAMETROS_FORMAIS() {
+ void nonPARAMETROS_FORMAIS() {
 
-}
+ }
 
-void nonPARAMETRO_FORMAL() {
+ void nonPARAMETRO_FORMAL() {
 
 }
 
@@ -231,6 +232,7 @@ void nonTERMO() {
 void nonFATOR() {
 
 }
+*/
 
 /* Struct do token */
 typedef struct token {
@@ -240,11 +242,11 @@ typedef struct token {
 
 
 int isRELACAO() {
-    return  0;
+	return  0;
 }
 
 int isBOL() {
-    return 0;
+	return 0;
 }
 
 /* Verifica se entrada é um número - [0 - 9]*/
@@ -255,6 +257,7 @@ int isNumber(char n) {
 
 	return 0;
 }
+
 /* Verifica se entrada é uma letra de A-z */
 int isLetter(char c) {
 	int a = (int) c;
@@ -876,36 +879,35 @@ q97:
 	token.name = COMMENTS;
 	return token;
 }
+
 /*
 void next() {
-    char res[100];
-    int len;
-    TOKEN token;
-    getToken(&token);
-    sprintf(res, "%d", token.name);
-    len = strlen(res);
+   char res[100];
+   int len;
+   TOKEN token;
+   getToken(&token);
+   sprintf(res, "%d", token.name);
+   len = strlen(res);
 
-    lookahead = (char *) malloc(len * sizeof(char));
-    strcpy(lookahead, res);
+   lookahead = (char *) malloc(len * sizeof(char));
+   strcpy(lookahead, res);
 
-    /* se houver comentario descarta e vai para a proxima entrada
-    if (strcmp(lookahead, COMMENTS) == 0) {
-        match();
-    }
+	// se houver comentario descarta e vai para a proxima entrada
+	if (strcmp(lookahead, COMMENTS) == 0) {
+		match();
+	}
 }
+*/
 
- */
-void syntax(){
-    printf("Syntax\n");
-
+void syntax() {
+	printf("Syntax\n");
 }
-
 
 int main(int argc, char *argv[]) {
 	int pos = 0;
 	int inputSize = 800;
-    int i;
-    char inputFile[inputSize];
+	int i;
+	char inputFile[inputSize];
 	char found[inputSize];
 
 	for (i = 0; i < inputSize; i++) {
@@ -921,7 +923,7 @@ int main(int argc, char *argv[]) {
 	while (pos < strlen(inputFile)) {
 		TOKEN token = scanner(inputFile, &pos);
 		sprintf(res, "%d", token.name);
-    	strcat(result, res);
+		strcat(result, res);
 		strcat(result, "\n");
 		strcpy(res, "");
 
@@ -934,7 +936,7 @@ int main(int argc, char *argv[]) {
 
 	writeFile(result, strlen(result), "lexical_analysis.txt");
 
-	syntax(result);
+	syntax();
 
 	return 0;
 }
