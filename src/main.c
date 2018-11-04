@@ -17,8 +17,8 @@
 #define VOID             1005
 #define IF               1006
 #define INT              1007
-#define TRUE_             1008
-#define FALSE_            1009
+#define TRUE_            1008
+#define FALSE_           1009
 #define ELSE             1010
 #define COMMENTS         1011
 #define DIVISION         1012
@@ -41,6 +41,51 @@
 #define NEGATIVENUMBER   1029
 #define ASSIGNMENT       1030
 #define ERROR            404
+/*
+ * non-terminal functions
+ */
+    /* Sintaxe */
+void nonPROGRAMA();
+void nonBLOCO();
+void nonPARTE_DECLARACOE_VARIAVEIS();
+void nonPARTE_DECLARACOE_FUNCOES();
+void nonCOMANDO_COMPOSTO();
+    /* Defintions */
+void nonDECLARACAO_VARIAVEIS();
+void nonDECLARACAO_FUNCOES();
+void nonTIPO();
+void nonLISTA_IDENTIFICADORES();
+void nonIDENTIFICADOR();
+void nonPARAMETROS_FORMAIS();
+void nonPARAMETRO_FORMAL();
+    /* Commands */
+void nonCOMANDO_COMPOSTO();
+void nonCOMANDO();
+void nonATRIBUICAO();
+void nonCHAMADA_PROCEDIMENTO();
+void nonCOMANDO_CONDICIONAL();
+void nonCOMANDO_REPETITIVO();
+void nonEXPRESSAO();
+void nonLISTA_PARAMETROS();
+void nonINT();
+void nonBOL();
+    /* Expressions */
+void nonEXPRESSAO_SIMPLES();
+void nonRELACAO();
+void nonTERMO();
+void nonFATOR();
+
+/*
+ * Validation functions
+ */
+
+bool isRELACAO();
+bool isBOL();
+bool isINT();
+bool isIDENTIFICADOR();
+bool isDIGITO();
+bool isLETRA();
+
 
 /* Struct do token */
 typedef struct token {
@@ -679,10 +724,10 @@ q97:
 }
 
 int main(int argc, char *argv[]) {
-	int pos, i, inputSize;
+	int pos = 0;
+	int inputSize = 800;
+    int i;
 
-	inputSize = 800;
-	pos = 0;
 	char inputFile[inputSize];
 	char found[inputSize];
 
@@ -703,11 +748,6 @@ int main(int argc, char *argv[]) {
 		strcat(result, "\n");
 		strcpy(res, "");
 
-		/* Não recebe atribuicao de valor valida resulta em SEGMENTATION FAULT */
-		/*if (token.value == NULL) {*/
-			/*strcat(result, token.value);*/
-			/*strcat(result, " ");*/
-		/*}*/
 		if (token.name == ERROR) {
 			printf("ERRO LEXICO\n");
 			printf("%s\n", result);
