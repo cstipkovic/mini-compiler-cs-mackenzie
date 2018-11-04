@@ -64,7 +64,6 @@ void nonIDENTIFICADOR();
 void nonPARAMETROS_FORMAIS();
 void nonPARAMETRO_FORMAL();
 /* Commands */
-void nonCOMANDO_COMPOSTO();
 void nonCOMANDO();
 void nonATRIBUICAO();
 void nonCHAMADA_PROCEDIMENTO();
@@ -114,11 +113,11 @@ void nonPROGRAMA(){
 
     /* ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN */
 
-    if (token == PROGRAM) {
+    if (*token == PROGRAM) {
         next();
-        if (token == IDENTIFIER) {
+        if (*token == IDENTIFIER) {
             next();
-            if (token == BRACEOPEN) {
+            if (*token == BRACEOPEN) {
                 next();
                 nonBLOCO();
             } else {
@@ -151,22 +150,22 @@ void nonCOMANDO_COMPOSTO() {
 }
 
 void nonDECLARACAO_VARIAVEIS() {
-    if (token == INT || token == BOOLEAN) {
+    if (*token == INT || *token == BOOLEAN) {
         nonTIPO();
         nonLISTA_IDENTIFICADORES();
     }
 }
 
 void nonDECLARACAO_FUNCOES() {
-    if (token == VOID {
+    if (*token == VOID) {
         next();
         nonIDENTIFICADOR();
-        if (token == PARENTHESISOPEN) {
+        if (*token == PARENTHESISOPEN) {
             next();
             nonPARAMETROS_FORMAIS();
-            if (token == PARENTHESISCLOSE) {
+            if (*token == PARENTHESISCLOSE) {
                 next();
-                if (token = BRACEOPEN) {
+                if (*token == BRACEOPEN) {
                     next();
                     nonBLOCO();
                 } else {
@@ -177,15 +176,13 @@ void nonDECLARACAO_FUNCOES() {
         } else {
             printf("ERROR: expected { to open a function block ");
         }
-    } else {
-        printf("ERROR: expected { to open a function block");
-    } else {
+    }else {
         printf("ERROR: expected VOID to function definition");
     }
 }
 
 void nonTIPO() {
-    if (token == INT || token == BOOLEAN) {
+    if (*token == INT || *token == BOOLEAN) {
         next();
     } else {
         printf("ERROR: type isn't defined {INT | BOOLEAN}");
@@ -200,7 +197,7 @@ void nonIDENTIFICADOR() {
     /*
      * ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO
      */
-    if (token == IDENTIFIER) {
+    if (*token == IDENTIFIER) {
         next();
     } else {
         printf("ERROR: invalid IDENTIFIER");
@@ -212,14 +209,10 @@ void nonPARAMETROS_FORMAIS() {
 }
 
 void nonPARAMETRO_FORMAL() {
-    if (token == INT || token == BOOLEAN) {
+    if (*token == INT || *token == BOOLEAN) {
         next();
         nonIDENTIFICADOR();
     }
-}
-
-void nonCOMANDO_COMPOSTO() {
-    nonCOMANDO();
 }
 
 void nonCOMANDO() {
@@ -227,7 +220,7 @@ void nonCOMANDO() {
     nonCHAMADA_PROCEDIMENTO();
     nonCOMANDO_CONDICIONAL();
     nonCOMANDO_REPETITIVO();
-    if (token == PRINT) {
+    if (*token == PRINT) {
         next();
         /*
          * CRIAR FUNCAO PRA IMPRIMIR TABELA DE ESCOPO
@@ -237,9 +230,12 @@ void nonCOMANDO() {
 
 void nonATRIBUICAO() {
     if (token  == ASSIGNMENT) {
-        /*
-         * VER COMO ISSO FAZER
-         */
+    	/*
+    	 * SERA QUE PRECISA DE NEXT ?
+    	 */
+    	next();
+    	nonIDENTIFICADOR();
+    	nonEXPRESSAO();
     }
 
 }
@@ -251,12 +247,12 @@ void nonCHAMADA_PROCEDIMENTO() {
 }
 
 void nonCOMANDO_CONDICIONAL() {
-    if (token == IF) {
+    if (*token == IF) {
         next();
         nonEXPRESSAO();
         nonCOMANDO_COMPOSTO();
-        if (token == BRACEOPEN) {
-            if (token ==  ELSE) {
+        if (*token == BRACEOPEN) {
+            if (*token == ELSE) {
                 next();
                 nonCOMANDO_COMPOSTO();
             }
@@ -267,10 +263,10 @@ void nonCOMANDO_CONDICIONAL() {
 }
 
 void nonCOMANDO_REPETITIVO() {
-    if (token == WHILE) {
+    if (*token == WHILE) {
         next();
         nonEXPRESSAO();
-        if (token == BRACEOPEN) {
+        if (*token == BRACEOPEN) {
             next();
             nonCOMANDO_COMPOSTO();
         } else {
@@ -284,7 +280,7 @@ void nonEXPRESSAO() {
 }
 
 void nonLISTA_PARAMETROS() {
-    if (token == IDENTIFIER || token == POSITIVENUMBER || token == NEGATIVENUMBER || token == BOOLEAN) {
+    if (*token == IDENTIFIER || *token == POSITIVENUMBER || *token == NEGATIVENUMBER || *token == BOOLEAN) {
         next();
         nonIDENTIFICADOR();
         nonINT();
@@ -293,7 +289,7 @@ void nonLISTA_PARAMETROS() {
 }
 
 void nonINT() {
-    if (token == POSITIVENUMBER || token == NEGATIVENUMBER) {
+    if (*token == POSITIVENUMBER || *token == NEGATIVENUMBER) {
         next();
     } else {
         printf("ERROR: was expected INT");
@@ -301,7 +297,7 @@ void nonINT() {
 }
 
 void nonBOL() {
-    if (token == BOOLEAN) {
+    if (*token == BOOLEAN) {
         next();
     } else {
         printf("ERROR: was expected BOOLEAN");
@@ -309,7 +305,7 @@ void nonBOL() {
 }
 
 void nonEXPRESSAO_SIMPLES() {
-    if (token == SUM || token == SUBTRACTION) {
+    if (*token == SUM || *token == SUBTRACTION) {
         next();
         nonTERMO();
         nonRELACAO();
@@ -319,7 +315,7 @@ void nonEXPRESSAO_SIMPLES() {
 }
 
 void nonRELACAO() {
-    if (token == EQUALS || token == LESSEQUAL || token == GREATEREQUAL || token == DIFF || token == LESSTHAN || token == GREATERTHAN) {
+    if (*token == EQUALS || *token == LESSEQUAL || *token == GREATEREQUAL || *token == DIFF || *token == LESSTHAN || *token == GREATERTHAN) {
         next();
     } else {
         printf("ERROR: invalid expression");
@@ -327,7 +323,7 @@ void nonRELACAO() {
 }
 
 void nonTERMO() {
-    if (token == MULTIPLICATION ||token == DIVISION) {
+    if (*token == MULTIPLICATION ||*token == DIVISION) {
         next();
         nonFATOR();
     } else {
@@ -337,7 +333,7 @@ void nonTERMO() {
 }
 
 void nonFATOR() {
-    if (token == IDENTIFIER || token == NEGATIVENUMBER || token == POSITIVENUMBER || token == BOOLEAN) {
+    if (*token == IDENTIFIER || *token == NEGATIVENUMBER || *token == POSITIVENUMBER || *token == BOOLEAN) {
         next();
         nonEXPRESSAO_SIMPLES();
     }
