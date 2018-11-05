@@ -770,6 +770,12 @@ void nonATRIBUICAO() {
 		next();
 		nonIDENTIFICADOR();
 		nonEXPRESSAO();
+		if (*token == COMMA) {
+			next();
+			printf("ERROR: expected ;");
+		} else {
+
+		}
 	}
 }
 
