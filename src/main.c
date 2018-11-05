@@ -932,7 +932,7 @@ void readFile(char filename[]) {
 		}
 		fclose(arquivo_entrada);
 	} else {
-		printf("\nFile not found, %s\n", filename);
+		printf("\nFile not found.%s\n");
 		exit(0);
 	}
 }
