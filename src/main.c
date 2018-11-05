@@ -632,7 +632,9 @@ q97:
 }
 
 /* Function implementation */
-void next();
+void next() {
+	/* TODO: Implementar essa função */
+}
 
 void nonPROGRAMA(){
 	/* ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN */
