@@ -15,7 +15,7 @@ typedef struct token {
 } TOKEN;
 
 /* Global variables*/
-char *lockahead;
+char *lookahead;
 char *txt;
 char *results;
 
@@ -99,6 +99,7 @@ void nonFATOR();
 /* Extra functions to help at validations */
 int isNumber(char n);
 int isLetter(char c);
+void getFirstToken();
 void next();
 
 /* Retorna a saida da entrada segundo especificacao do automato*/
@@ -635,32 +636,32 @@ q97:
 
 /* Function implementation */
 void nonPROGRAMA(){
-	/* ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN */
-	if (*lockahead == PROGRAM) {
+	getFirstToken();
+	if (*lookahead == PROGRAM) {
 		next();
-		if (*lockahead == IDENTIFIER) {
+		if (*lookahead == IDENTIFIER) {
 			next();
-			if (*lockahead == BRACEOPEN) {
+			if (*lookahead == BRACEOPEN) {
 				next();
 				nonBLOCO();
-				if (*lockahead == BRACECLOSE) {
+				if (*lookahead == BRACECLOSE) {
 					next();
-					if (*lockahead == EOF) {
-						printf("SUCCESS");
+					if (*lookahead == EOF) {
+						printf("SUCCESS\n");
 					} else {
-						printf("ERROR: incomplete file reading");
+						printf("ERROR: incomplete file reading\n");
 					}
 				} else {
-					printf("ERROR: expected } to open a function block");
+					printf("ERROR: expected } to open a function block\n");
 				}
 			} else {
-				printf("ERROR: expected { to open a function block");
+				printf("ERROR: expected { to open a function block\n");
 			}
 		} else {
-			printf("ERROR: after PROGRAM declaration an identifier is not defined");
+			printf("ERROR: after PROGRAM declaration an identifier is not defined\n");
 		}
 	} else {
-		printf("ERROR: invalid PROGRAM begin declaration");
+		printf("ERROR: invalid PROGRAM begin declaration\n");
 	}
 }
 
@@ -683,48 +684,48 @@ void nonCOMANDO_COMPOSTO() {
 }
 
 void nonDECLARACAO_VARIAVEIS() {
-	if (*lockahead == INT || *lockahead == BOOLEAN) {
+	if (*lookahead == INT || *lookahead == BOOLEAN) {
 		nonTIPO();
 		nonLISTA_IDENTIFICADORES();
 	}
 }
 
 void nonDECLARACAO_FUNCOES() {
-	if (*lockahead == VOID) {
+	if (*lookahead == VOID) {
 		next();
 		nonIDENTIFICADOR();
-		if (*lockahead == PARENTHESISOPEN) {
+		if (*lookahead == PARENTHESISOPEN) {
 			next();
 			nonPARAMETROS_FORMAIS();
-			if (*lockahead == PARENTHESISCLOSE) {
+			if (*lookahead == PARENTHESISCLOSE) {
 				next();
-				if (*lockahead == BRACEOPEN) {
+				if (*lookahead == BRACEOPEN) {
 					next();
 					nonBLOCO();
-					if (*lockahead == BRACECLOSE) {
+					if (*lookahead == BRACECLOSE) {
 						next();
 					} else {
-						printf("ERROR: expected } to open a function block ");
+						printf("ERROR: expected } to open a function block\n");
 					}
 				} else {
-					printf("ERROR: expected { to open a function block");
+					printf("ERROR: expected { to open a function block\n");
 				}
 			} else {
-				printf("ERROR: expected ) to paramenters function");
+				printf("ERROR: expected ) to paramenters function\n");
 			}
 		} else {
-			printf("ERROR: expected ( to open a function block ");
+			printf("ERROR: expected ( to open a function block\n");
 		}
 	} else {
-		printf("ERROR: expected VOID to function definition");
+		printf("ERROR: expected VOID to function definition\n");
 	}
 }
 
 void nonTIPO() {
-	if (*lockahead == INT || *lockahead == BOOLEAN) {
+	if (*lookahead == INT || *lookahead == BOOLEAN) {
 		next();
 	} else {
-		printf("ERROR: type isn't defined {INT | BOOLEAN}");
+		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
 	}
 }
 
@@ -734,10 +735,10 @@ void nonLISTA_IDENTIFICADORES() {
 
 void nonIDENTIFICADOR() {
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
-	if (*lockahead == IDENTIFIER) {
+	if (*lookahead == IDENTIFIER) {
 		next();
 	} else {
-		printf("ERROR: invalid IDENTIFIER");
+		printf("ERROR: invalid IDENTIFIER\n");
 	}
 }
 
@@ -746,7 +747,7 @@ void nonPARAMETROS_FORMAIS() {
 }
 
 void nonPARAMETRO_FORMAL() {
-	if (*lockahead == INT || *lockahead == BOOLEAN) {
+	if (*lookahead == INT || *lookahead == BOOLEAN) {
 		next();
 		nonIDENTIFICADOR();
 	}
@@ -757,21 +758,21 @@ void nonCOMANDO() {
 	nonCHAMADA_PROCEDIMENTO();
 	nonCOMANDO_CONDICIONAL();
 	nonCOMANDO_REPETITIVO();
-	if (*lockahead == PRINT) {
+	if (*lookahead == PRINT) {
 		next();
 		/* TODO: CRIAR FUNCAO PRA IMPRIMIR TABELA DE ESCOPO */
 	}
 }
 
 void nonATRIBUICAO() {
-	if (*lockahead  == ASSIGNMENT) {
+	if (*lookahead  == ASSIGNMENT) {
 		/* TODO: SERA QUE PRECISA DE NEXT? */
 		next();
 		nonIDENTIFICADOR();
 		nonEXPRESSAO();
-		if (*lockahead == COMMA) {
+		if (*lookahead == COMMA) {
 			next();
-			printf("ERROR: expected ;");
+			printf("ERROR: expected ;\n");
 		} else {
 
 		}
@@ -784,40 +785,40 @@ void nonCHAMADA_PROCEDIMENTO() {
 }
 
 void nonCOMANDO_CONDICIONAL() {
-	if (*lockahead == IF) {
+	if (*lookahead == IF) {
 		next();
 		nonEXPRESSAO();
 		nonCOMANDO_COMPOSTO();
-		if (*lockahead == BRACEOPEN) {
-			if (*lockahead == ELSE) {
+		if (*lookahead == BRACEOPEN) {
+			if (*lookahead == ELSE) {
 				next();
 				nonCOMANDO_COMPOSTO();
-				if (*lockahead == BRACECLOSE) {
+				if (*lookahead == BRACECLOSE) {
 					next();
 				} else {
-					printf("ERROR: expected } to open a function block");
+					printf("ERROR: expected } to open a function block\n");
 				}
 			}
 		} else {
-			printf("ERROR: expected { to open a function block");
+			printf("ERROR: expected { to open a function block\n");
 		}
 	}
 }
 
 void nonCOMANDO_REPETITIVO() {
-	if (*lockahead == WHILE) {
+	if (*lookahead == WHILE) {
 		next();
 		nonEXPRESSAO();
-		if (*lockahead == BRACEOPEN) {
+		if (*lookahead == BRACEOPEN) {
 			next();
 			nonCOMANDO_COMPOSTO();
-			if (*lockahead == BRACEOPEN) {
+			if (*lookahead == BRACEOPEN) {
 				next();
 			} else {
-				printf("ERROR: expected } to open a function block");
+				printf("ERROR: expected } to open a function block\n");
 			}
 		} else {
-			printf("ERROR: expected { to open a function block");
+			printf("ERROR: expected { to open a function block\n");
 		}
 	}
 }
@@ -827,7 +828,7 @@ void nonEXPRESSAO() {
 }
 
 void nonLISTA_PARAMETROS() {
-	if (*lockahead == IDENTIFIER || *lockahead == POSITIVENUMBER || *lockahead == NEGATIVENUMBER || *lockahead == BOOLEAN) {
+	if (*lookahead == IDENTIFIER || *lookahead == POSITIVENUMBER || *lookahead == NEGATIVENUMBER || *lookahead == BOOLEAN) {
 		next();
 		nonIDENTIFICADOR();
 		nonINT();
@@ -836,51 +837,51 @@ void nonLISTA_PARAMETROS() {
 }
 
 void nonINT() {
-	if (*lockahead == POSITIVENUMBER || *lockahead == NEGATIVENUMBER) {
+	if (*lookahead == POSITIVENUMBER || *lookahead == NEGATIVENUMBER) {
 		next();
 	} else {
-		printf("ERROR: was expected INT");
+		printf("ERROR: was expected INT\n");
 	}
 }
 
 void nonBOL() {
-	if (*lockahead == BOOLEAN) {
+	if (*lookahead == BOOLEAN) {
 		next();
 	} else {
-		printf("ERROR: was expected BOOLEAN");
+		printf("ERROR: was expected BOOLEAN\n");
 	}
 }
 
 void nonEXPRESSAO_SIMPLES() {
-	if (*lockahead == SUM || *lockahead == SUBTRACTION) {
+	if (*lookahead == SUM || *lookahead == SUBTRACTION) {
 		next();
 		nonTERMO();
 		nonRELACAO();
 	} else {
-		printf("ERROR: invalid expression");
+		printf("ERROR: invalid expression\n");
 	}
 }
 
 void nonRELACAO() {
-	if (*lockahead == EQUALS || *lockahead == LESSEQUAL || *lockahead == GREATEREQUAL || *lockahead == DIFF || *lockahead == LESSTHAN || *lockahead == GREATERTHAN) {
+	if (*lookahead == EQUALS || *lookahead == LESSEQUAL || *lookahead == GREATEREQUAL || *lookahead == DIFF || *lookahead == LESSTHAN || *lookahead == GREATERTHAN) {
 		next();
 	} else {
-		printf("ERROR: invalid expression");
+		printf("ERROR: invalid expression\n");
 	}
 }
 
 void nonTERMO() {
-	if (*lockahead == MULTIPLICATION ||*lockahead == DIVISION) {
+	if (*lookahead == MULTIPLICATION ||*lookahead == DIVISION) {
 		next();
 		nonFATOR();
 	} else {
-		printf("ERROR: invalid expression");
+		printf("ERROR: invalid expression\n");
 	}
 
 }
 
 void nonFATOR() {
-	if (*lockahead == IDENTIFIER || *lockahead == NEGATIVENUMBER || *lockahead == POSITIVENUMBER || *lockahead == BOOLEAN) {
+	if (*lookahead == IDENTIFIER || *lookahead == NEGATIVENUMBER || *lookahead == POSITIVENUMBER || *lookahead == BOOLEAN) {
 		next();
 		nonEXPRESSAO_SIMPLES();
 	}
@@ -919,20 +920,23 @@ int needValue(char aux[]) {
 	return 0;
 }
 
-/* Lê o arquivo com o código proposto */
-void readFile(char text[], char filename[]) {
-	FILE *inputFile;
-	inputFile = fopen(filename, "r");
-	char line[400];
-
-	if (inputFile) {
-		while (fscanf(inputFile, "%s ", line) != EOF) {
+void readFile(char filename[]) {
+	printf("Reading input file %s\n", filename);
+	FILE *arquivo_entrada;
+	arquivo_entrada = fopen(filename,"r");
+	char line[800];
+	if (arquivo_entrada) {
+		while (fscanf(arquivo_entrada,"%s ", line) != EOF) {
 			strcat(line, " ");
-			strcat(text, line);
+			strcat(txt,line);
 		}
-		fclose(inputFile);
+		fclose(arquivo_entrada);
+	} else {
+		printf("\nFile not found, %s\n", filename);
+		exit(0);
 	}
 }
+
 
 /* Escreve os resultados no arquivo de saida */
 void writeFile(char result[], int pos, char filename[]) {
@@ -1018,6 +1022,14 @@ void getToken(TOKEN *t) {
 	}
 }
 
+void getFirstToken(){
+	TOKEN token;
+	getToken(&token);
+	lookahead = (char *) malloc( 10 * sizeof(char) );
+	/* Converter o token de int para char* */
+	sprintf(lookahead, "%d", token.name);
+}
+
 void next() {
 	char res[100];
 	int len;
@@ -1026,14 +1038,13 @@ void next() {
 	sprintf(res, "%d", token.name);
 	len = strlen(res);
 
-	lockahead = (char *) malloc(len * sizeof(char));
+	lookahead = (char *) malloc(len * sizeof(char));
 	strcpy(lookahead, res);
 
-	/* If comment go to next lockahead*/
+	/* If comment go to next lookahead*/
 	if (lookahead == COMMENTS) {
 		next();
 	}
-
 }
 
 
@@ -1043,19 +1054,19 @@ void lexical() {
 	int pos = 0;
 
 	txt = (char *) malloc(len * sizeof(char));
-	result = (char *) malloc(len * sizeof(char));
+	results = (char *) malloc(len * sizeof(char));
 
 	/* Vector initialization. */
 	for (i = 0; i < len; i++) {
 		txt[i] = '\0';
-		result[i] = '\0';
+		results[i] = '\0';
 	}
 
-	readFile(len, "test-algC.txt");;
+	readFile("test-algC.txt");
 }
 
 void syntax() {
-	printf("Syntax\n");
+	nonPROGRAMA();
 }
 
 int main(int argc, char *argv[]) {

@@ -848,7 +848,7 @@ q157:(*pos)++;
 q158:(*pos)++;
     if(txt[*pos] == '*') goto q160;
     else if(txt[*pos] != '*') goto q159;
-    else return token;
+    else return token; == 0)
 q159:(*pos)++;
     if(txt[*pos] == '*') goto q160;
     else if(txt[*pos] != '*') goto q159;
