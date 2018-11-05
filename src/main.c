@@ -45,7 +45,7 @@ char *token;
 #define NEGATIVENUMBER   1029
 #define ASSIGNMENT       1030
 #define ERROR            404
-
+#define EOF				 999
 /*
  * non-terminal functions
  */
@@ -83,9 +83,6 @@ void nonFATOR();
  * Validation functions
  */
 
-int isRELACAO();
-int isBOL();
-int isIDENTIFICADOR();
 /*
  * int isINT();          -> using function isNumber to validate it.
  * int isDIGITO(char n); -> using function isNumber to validate it.
@@ -120,8 +117,18 @@ void nonPROGRAMA(){
             if (*token == BRACEOPEN) {
                 next();
                 nonBLOCO();
+                if (*token == BRACECLOSE) {
+                	next();
+                	if (*token == EOF) {
+						printf("SUCCESS");
+                	} else {
+						printf("ERROR: incomplete file reading");
+                	}
+                } else {
+					printf("ERROR: expected } to open a function block");
+                }
             } else {
-                printf("ERROR: doesn't found block declaration");
+				printf("ERROR: expected { to open a function block");
             }
         } else {
             printf("ERROR: after PROGRAM declaration an identifier is not defined");
@@ -168,13 +175,18 @@ void nonDECLARACAO_FUNCOES() {
                 if (*token == BRACEOPEN) {
                     next();
                     nonBLOCO();
+                    if (*token == BRACECLOSE) {
+                    	next();
+                    } else {
+						printf("ERROR: expected } to open a function block ");
+                    }
                 } else {
                     printf("ERROR: expected { to open a function block");
                 }
             } else { printf("ERROR: expected ) to paramenters function");
             }
         } else {
-            printf("ERROR: expected { to open a function block ");
+            printf("ERROR: expected ( to open a function block ");
         }
     }else {
         printf("ERROR: expected VOID to function definition");
@@ -254,6 +266,11 @@ void nonCOMANDO_CONDICIONAL() {
             if (*token == ELSE) {
                 next();
                 nonCOMANDO_COMPOSTO();
+                if (*token == BRACECLOSE) {
+					next();
+                } else {
+					printf("ERROR: expected } to open a function block");
+                }
             }
         } else {
             printf("ERROR: expected { to open a function block");
@@ -268,6 +285,11 @@ void nonCOMANDO_REPETITIVO() {
         if (*token == BRACEOPEN) {
             next();
             nonCOMANDO_COMPOSTO();
+            if (*token == BRACEOPEN) {
+            	next();
+            } else {
+				printf("ERROR: expected } to open a function block");
+            }
         } else {
             printf("ERROR: expected { to open a function block");
         }
@@ -344,14 +366,6 @@ typedef struct token {
 	char* value;
 } TOKEN;
 
-
-int isRELACAO() {
-	return  0;
-}
-
-int isBOL() {
-	return 0;
-}
 
 /* Verifica se entrada é um número - [0 - 9]*/
 int isNumber(char n) {
