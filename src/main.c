@@ -15,7 +15,6 @@ typedef struct token {
 } TOKEN;
 
 /* Global variables*/
-char *lookahead;
 char *token;
 
 /* Constants codes */
@@ -980,24 +979,23 @@ char* getValue(char text[], int pos) {
 	return value;
 }
 
-/*
-   void next() {
+void next() {
    char res[100];
    int len;
-   TOKEN token;
-   getToken(&token);
-   sprintf(res, "%d", token.name);
+   TOKEN t;
+   /*getToken(&t);*/
+   sprintf(res, "%d", t.name);
    len = strlen(res);
 
-   lookahead = (char *) malloc(len * sizeof(char));
-   strcpy(lookahead, res);
+   token = (char *) malloc(len * sizeof(char));
+   strcpy(token, res);
 
-// se houver comentario descarta e vai para a proxima entrada
-if (strcmp(lookahead, COMMENTS) == 0) {
-match();
+	/* se houver comentario descarta e vai para a proxima entrada */
+	if (*token == COMMENTS) {
+		next();
+	}
 }
-}
-*/
+
 
 void syntax() {
 	printf("Syntax\n");
