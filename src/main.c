@@ -51,7 +51,6 @@ char *token;
 #define NEGATIVENUMBER   1029
 #define ASSIGNMENT       1030
 #define ERROR            404
-#define ENDOFFILE        999
 
 /* non-terminal functions */
 /* Syntax */
