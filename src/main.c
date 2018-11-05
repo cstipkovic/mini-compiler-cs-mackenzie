@@ -90,11 +90,9 @@ void nonFATOR();
 
 /* Validation functions */
 
-/*
- * int isINT();          -> using function isNumber to validate it.
- * int isDIGITO(char n); -> using function isNumber to validate it.
- * int isLETRA(char c);  -> using function isLetter to validate it.
- */
+/* int isINT();          -> using function isNumber to validate it. */
+/* int isDIGITO(char n); -> using function isNumber to validate it. */
+/* int isLETRA(char c);  -> using function isLetter to validate it. */
 
 /* Extra functions to help at validations */
 int isNumber(char n);
@@ -102,7 +100,7 @@ int isLetter(char c);
 void getFirstToken();
 void next();
 
-/* Retorna a saida da entrada segundo especificacao do automato*/
+/* Retorna a saida da entrada segundo especificacao do automato */
 TOKEN scanner(char text[], int *pos) {
 	TOKEN token;
 	token.name = ERROR;
@@ -1070,39 +1068,6 @@ void syntax() {
 }
 
 int main(int argc, char *argv[]) {
-	/*
-	int pos = 0;
-	int inputSize = 800;
-	int i;
-	char inputFile[inputSize];
-	char found[inputSize];
-
-	for (i = 0; i < inputSize; i++) {
-		inputFile[i] = '\0';
-	}
-
-	readFile(inputFile, "test-algC.txt");
-	char result[inputSize];
-	strcpy(result, "");
-
-	char res[inputSize];
-
-	while (pos < strlen(inputFile)) {
-		TOKEN token = scanner(inputFile, &pos);
-		sprintf(res, "%d", token.name);
-		strcat(result, res);
-		strcat(result, "\n");
-		strcpy(res, "");
-
-		if (token.name == ERROR) {
-			printf("ERRO LEXICO\n");
-			printf("%s\n", result);
-			break;
-		}
-	}
-
-	writeFile(result, strlen(result), "lexical_analysis.txt");
-	*/
 	lexical();
 	syntax();
 
