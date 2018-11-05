@@ -8,6 +8,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Struct do token */
+typedef struct token {
+	int name;
+	char* value;
+} TOKEN;
+
 /* Global variables*/
 char *lookahead;
 char *token;
@@ -45,16 +51,16 @@ char *token;
 #define NEGATIVENUMBER   1029
 #define ASSIGNMENT       1030
 #define ERROR            404
-#define EOF				 999
-/*
- * non-terminal functions
- */
+#define ENDOFFILE        999
+
+/* non-terminal functions */
 /* Syntax */
 void nonPROGRAMA();
 void nonBLOCO();
 void nonPARTE_DECLARACOE_VARIAVEIS();
 void nonPARTE_DECLARACOE_FUNCOES();
 void nonCOMANDO_COMPOSTO();
+
 /* Defintions */
 void nonDECLARACAO_VARIAVEIS();
 void nonDECLARACAO_FUNCOES();
@@ -63,6 +69,7 @@ void nonLISTA_IDENTIFICADORES();
 void nonIDENTIFICADOR();
 void nonPARAMETROS_FORMAIS();
 void nonPARAMETRO_FORMAL();
+
 /* Commands */
 void nonCOMANDO();
 void nonATRIBUICAO();
@@ -73,15 +80,14 @@ void nonEXPRESSAO();
 void nonLISTA_PARAMETROS();
 void nonINT();
 void nonBOL();
+
 /* Expressions */
 void nonEXPRESSAO_SIMPLES();
 void nonRELACAO();
 void nonTERMO();
 void nonFATOR();
 
-/*
- * Validation functions
- */
+/* Validation functions */
 
 /*
  * int isINT();          -> using function isNumber to validate it.
@@ -89,382 +95,10 @@ void nonFATOR();
  * int isLETRA(char c);  -> using function isLetter to validate it.
  */
 
-/*
- * Extra functions to help at validations
- */
+/* Extra functions to help at validations */
 int isNumber(char n);
 int isLetter(char c);
 void next();
-
-/*
- * Function implementation
- */
-
-void next();
-
-/*
- * Function implementation
- */
-
-void nonPROGRAMA(){
-
-    /* ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN */
-
-    if (*token == PROGRAM) {
-        next();
-        if (*token == IDENTIFIER) {
-            next();
-            if (*token == BRACEOPEN) {
-                next();
-                nonBLOCO();
-                if (*token == BRACECLOSE) {
-                	next();
-                	if (*token == EOF) {
-						printf("SUCCESS");
-                	} else {
-						printf("ERROR: incomplete file reading");
-                	}
-                } else {
-					printf("ERROR: expected } to open a function block");
-                }
-            } else {
-				printf("ERROR: expected { to open a function block");
-            }
-        } else {
-            printf("ERROR: after PROGRAM declaration an identifier is not defined");
-        }
-    } else {
-        printf("ERROR: invalid PROGRAM begin declaration");
-    }
-}
-
-void nonBLOCO() {
-    nonPARTE_DECLARACOE_VARIAVEIS();
-    nonPARTE_DECLARACOE_FUNCOES();
-    nonCOMANDO_COMPOSTO();
-}
-
-void nonPARTE_DECLARACOE_VARIAVEIS() {
-    nonDECLARACAO_VARIAVEIS();
-}
-
-void nonPARTE_DECLARACOE_FUNCOES() {
-    nonDECLARACAO_FUNCOES();
-}
-
-void nonCOMANDO_COMPOSTO() {
-    nonCOMANDO();
-}
-
-void nonDECLARACAO_VARIAVEIS() {
-    if (*token == INT || *token == BOOLEAN) {
-        nonTIPO();
-        nonLISTA_IDENTIFICADORES();
-    }
-}
-
-void nonDECLARACAO_FUNCOES() {
-    if (*token == VOID) {
-        next();
-        nonIDENTIFICADOR();
-        if (*token == PARENTHESISOPEN) {
-            next();
-            nonPARAMETROS_FORMAIS();
-            if (*token == PARENTHESISCLOSE) {
-                next();
-                if (*token == BRACEOPEN) {
-                    next();
-                    nonBLOCO();
-                    if (*token == BRACECLOSE) {
-                    	next();
-                    } else {
-						printf("ERROR: expected } to open a function block ");
-                    }
-                } else {
-                    printf("ERROR: expected { to open a function block");
-                }
-            } else { printf("ERROR: expected ) to paramenters function");
-            }
-        } else {
-            printf("ERROR: expected ( to open a function block ");
-        }
-    }else {
-        printf("ERROR: expected VOID to function definition");
-    }
-}
-
-void nonTIPO() {
-    if (*token == INT || *token == BOOLEAN) {
-        next();
-    } else {
-        printf("ERROR: type isn't defined {INT | BOOLEAN}");
-    }
-}
-
-void nonLISTA_IDENTIFICADORES() {
-    nonIDENTIFICADOR();
-}
-
-void nonIDENTIFICADOR() {
-    /*
-     * ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO
-     */
-    if (*token == IDENTIFIER) {
-        next();
-    } else {
-        printf("ERROR: invalid IDENTIFIER");
-    }
-}
-
-void nonPARAMETROS_FORMAIS() {
-    nonPARAMETRO_FORMAL();
-}
-
-void nonPARAMETRO_FORMAL() {
-    if (*token == INT || *token == BOOLEAN) {
-        next();
-        nonIDENTIFICADOR();
-    }
-}
-
-void nonCOMANDO() {
-    nonATRIBUICAO();
-    nonCHAMADA_PROCEDIMENTO();
-    nonCOMANDO_CONDICIONAL();
-    nonCOMANDO_REPETITIVO();
-    if (*token == PRINT) {
-        next();
-        /*
-         * CRIAR FUNCAO PRA IMPRIMIR TABELA DE ESCOPO
-         */
-    }
-}
-
-void nonATRIBUICAO() {
-    if (*token  == ASSIGNMENT) {
-    	/*
-    	 * SERA QUE PRECISA DE NEXT ?
-    	 */
-    	next();
-    	nonIDENTIFICADOR();
-    	nonEXPRESSAO();
-    }
-}
-
-void nonCHAMADA_PROCEDIMENTO() {
-    nonIDENTIFICADOR();
-    nonLISTA_PARAMETROS();
-
-}
-
-void nonCOMANDO_CONDICIONAL() {
-    if (*token == IF) {
-        next();
-        nonEXPRESSAO();
-        nonCOMANDO_COMPOSTO();
-        if (*token == BRACEOPEN) {
-            if (*token == ELSE) {
-                next();
-                nonCOMANDO_COMPOSTO();
-                if (*token == BRACECLOSE) {
-					next();
-                } else {
-					printf("ERROR: expected } to open a function block");
-                }
-            }
-        } else {
-            printf("ERROR: expected { to open a function block");
-        }
-    }
-}
-
-void nonCOMANDO_REPETITIVO() {
-    if (*token == WHILE) {
-        next();
-        nonEXPRESSAO();
-        if (*token == BRACEOPEN) {
-            next();
-            nonCOMANDO_COMPOSTO();
-            if (*token == BRACEOPEN) {
-            	next();
-            } else {
-				printf("ERROR: expected } to open a function block");
-            }
-        } else {
-            printf("ERROR: expected { to open a function block");
-        }
-    }
-}
-
-void nonEXPRESSAO() {
-    nonEXPRESSAO_SIMPLES();
-}
-
-void nonLISTA_PARAMETROS() {
-    if (*token == IDENTIFIER || *token == POSITIVENUMBER || *token == NEGATIVENUMBER || *token == BOOLEAN) {
-        next();
-        nonIDENTIFICADOR();
-        nonINT();
-        nonBOL();
-    }
-}
-
-void nonINT() {
-    if (*token == POSITIVENUMBER || *token == NEGATIVENUMBER) {
-        next();
-    } else {
-        printf("ERROR: was expected INT");
-    }
-}
-
-void nonBOL() {
-    if (*token == BOOLEAN) {
-        next();
-    } else {
-        printf("ERROR: was expected BOOLEAN");
-    }
-}
-
-void nonEXPRESSAO_SIMPLES() {
-    if (*token == SUM || *token == SUBTRACTION) {
-        next();
-        nonTERMO();
-        nonRELACAO();
-    } else {
-        printf("ERROR: invalid expression");
-    }
-}
-
-void nonRELACAO() {
-    if (*token == EQUALS || *token == LESSEQUAL || *token == GREATEREQUAL || *token == DIFF || *token == LESSTHAN || *token == GREATERTHAN) {
-        next();
-    } else {
-        printf("ERROR: invalid expression");
-    }
-}
-
-void nonTERMO() {
-    if (*token == MULTIPLICATION ||*token == DIVISION) {
-        next();
-        nonFATOR();
-    } else {
-        printf("ERROR: invalid expression");
-    }
-
-}
-
-void nonFATOR() {
-    if (*token == IDENTIFIER || *token == NEGATIVENUMBER || *token == POSITIVENUMBER || *token == BOOLEAN) {
-        next();
-        nonEXPRESSAO_SIMPLES();
-    }
-}
-
-/* Struct do token */
-typedef struct token {
-	int name;
-	char* value;
-} TOKEN;
-
-
-/* Verifica se entrada é um número - [0 - 9]*/
-int isNumber(char n) {
-	if (n == '0' || n == '1' || n == '2' || n == '3' || n == '4' || n == '5' || n == '6' || n == '7' || n == '8' || n == '9') {
-		return 1;
-	}
-
-	return 0;
-}
-
-/* Verifica se entrada é uma letra de A-z */
-int isLetter(char c) {
-	int a = (int) c;
-	if ((a > 96 && a < 123) || (a > 64 && a < 91)) {
-		return 1;
-	}
-
-	return 0;
-}
-
-/* Funcao auxiliar para definir se é um valor positivo, negativo ou um identificador*/
-int needValue(char aux[]) {
-	int c;
-
-	c = atoi(aux);
-
-	if (c == POSITIVENUMBER || c == NEGATIVENUMBER || c == IDENTIFIER) {
-		return 1;
-	}
-
-	return 0;
-}
-
-/* Lê o arquivo com o código proposto */
-void readFile(char text[], char filename[]) {
-	FILE *inputFile;
-	inputFile = fopen(filename, "r");
-	char line[400];
-
-	if (inputFile) {
-		while (fscanf(inputFile, "%s ", line) != EOF) {
-			strcat(line, " ");
-			strcat(text, line);
-		}
-		fclose(inputFile);
-	}
-}
-
-/* Escreve os resultados no arquivo de saida */
-void writeFile(char result[], int pos, char filename[]) {
-	int i, j, k;
-	j = 0;
-	char aux[100];
-
-	for (i = 0; i < pos; i++) {
-		aux[j] = result[i];
-		j++;
-
-		if (result[i] == ' ') {
-			if (needValue(aux)) {
-				for (k = i + 1; result[k] != ' '; k++, i++) {
-					i++;
-				}
-			}
-
-			result[i] = '\n';
-			j = 0;
-			aux[0] = '\0';
-		}
-	}
-
-	FILE *outputFile;
-	outputFile = fopen(filename, "w+");
-	fprintf(outputFile, "%s", result);
-	fclose(outputFile);
-}
-
-char* getValue(char text[], int pos) {
-	char *value;
-	int i, j, count;
-
-	count = 0;
-
-	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
-		count++;
-	}
-
-	value = malloc(2 * count * sizeof(char));
-	j = 0;
-
-	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
-		value[j] = text[i - count + 1 + (2 * j)];
-		j++;
-	}
-
-	printf("Value: %s\n", value);
-
-	return value;
-}
 
 /* Retorna a saida da entrada segundo especificacao do automato*/
 TOKEN scanner(char text[], int *pos) {
@@ -998,8 +632,357 @@ q97:
 	return token;
 }
 
+/* Function implementation */
+void next();
+
+void nonPROGRAMA(){
+	/* ADICIONAR FUNCAO PARA PEGAR O PRIMEIRO TOKEN */
+	if (*token == PROGRAM) {
+		next();
+		if (*token == IDENTIFIER) {
+			next();
+			if (*token == BRACEOPEN) {
+				next();
+				nonBLOCO();
+				if (*token == BRACECLOSE) {
+					next();
+					if (*token == EOF) {
+						printf("SUCCESS");
+					} else {
+						printf("ERROR: incomplete file reading");
+					}
+				} else {
+					printf("ERROR: expected } to open a function block");
+				}
+			} else {
+				printf("ERROR: expected { to open a function block");
+			}
+		} else {
+			printf("ERROR: after PROGRAM declaration an identifier is not defined");
+		}
+	} else {
+		printf("ERROR: invalid PROGRAM begin declaration");
+	}
+}
+
+void nonBLOCO() {
+	nonPARTE_DECLARACOE_VARIAVEIS();
+	nonPARTE_DECLARACOE_FUNCOES();
+	nonCOMANDO_COMPOSTO();
+}
+
+void nonPARTE_DECLARACOE_VARIAVEIS() {
+	nonDECLARACAO_VARIAVEIS();
+}
+
+void nonPARTE_DECLARACOE_FUNCOES() {
+	nonDECLARACAO_FUNCOES();
+}
+
+void nonCOMANDO_COMPOSTO() {
+	nonCOMANDO();
+}
+
+void nonDECLARACAO_VARIAVEIS() {
+	if (*token == INT || *token == BOOLEAN) {
+		nonTIPO();
+		nonLISTA_IDENTIFICADORES();
+	}
+}
+
+void nonDECLARACAO_FUNCOES() {
+	if (*token == VOID) {
+		next();
+		nonIDENTIFICADOR();
+		if (*token == PARENTHESISOPEN) {
+			next();
+			nonPARAMETROS_FORMAIS();
+			if (*token == PARENTHESISCLOSE) {
+				next();
+				if (*token == BRACEOPEN) {
+					next();
+					nonBLOCO();
+					if (*token == BRACECLOSE) {
+						next();
+					} else {
+						printf("ERROR: expected } to open a function block ");
+					}
+				} else {
+					printf("ERROR: expected { to open a function block");
+				}
+			} else {
+				printf("ERROR: expected ) to paramenters function");
+			}
+		} else {
+			printf("ERROR: expected ( to open a function block ");
+		}
+	} else {
+		printf("ERROR: expected VOID to function definition");
+	}
+}
+
+void nonTIPO() {
+	if (*token == INT || *token == BOOLEAN) {
+		next();
+	} else {
+		printf("ERROR: type isn't defined {INT | BOOLEAN}");
+	}
+}
+
+void nonLISTA_IDENTIFICADORES() {
+	nonIDENTIFICADOR();
+}
+
+void nonIDENTIFICADOR() {
+	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
+	if (*token == IDENTIFIER) {
+		next();
+	} else {
+		printf("ERROR: invalid IDENTIFIER");
+	}
+}
+
+void nonPARAMETROS_FORMAIS() {
+	nonPARAMETRO_FORMAL();
+}
+
+void nonPARAMETRO_FORMAL() {
+	if (*token == INT || *token == BOOLEAN) {
+		next();
+		nonIDENTIFICADOR();
+	}
+}
+
+void nonCOMANDO() {
+	nonATRIBUICAO();
+	nonCHAMADA_PROCEDIMENTO();
+	nonCOMANDO_CONDICIONAL();
+	nonCOMANDO_REPETITIVO();
+	if (*token == PRINT) {
+		next();
+		/* TODO: CRIAR FUNCAO PRA IMPRIMIR TABELA DE ESCOPO */
+	}
+}
+
+void nonATRIBUICAO() {
+	if (*token  == ASSIGNMENT) {
+		/* TODO: SERA QUE PRECISA DE NEXT? */
+		next();
+		nonIDENTIFICADOR();
+		nonEXPRESSAO();
+	}
+}
+
+void nonCHAMADA_PROCEDIMENTO() {
+	nonIDENTIFICADOR();
+	nonLISTA_PARAMETROS();
+}
+
+void nonCOMANDO_CONDICIONAL() {
+	if (*token == IF) {
+		next();
+		nonEXPRESSAO();
+		nonCOMANDO_COMPOSTO();
+		if (*token == BRACEOPEN) {
+			if (*token == ELSE) {
+				next();
+				nonCOMANDO_COMPOSTO();
+				if (*token == BRACECLOSE) {
+					next();
+				} else {
+					printf("ERROR: expected } to open a function block");
+				}
+			}
+		} else {
+			printf("ERROR: expected { to open a function block");
+		}
+	}
+}
+
+void nonCOMANDO_REPETITIVO() {
+	if (*token == WHILE) {
+		next();
+		nonEXPRESSAO();
+		if (*token == BRACEOPEN) {
+			next();
+			nonCOMANDO_COMPOSTO();
+			if (*token == BRACEOPEN) {
+				next();
+			} else {
+				printf("ERROR: expected } to open a function block");
+			}
+		} else {
+			printf("ERROR: expected { to open a function block");
+		}
+	}
+}
+
+void nonEXPRESSAO() {
+	nonEXPRESSAO_SIMPLES();
+}
+
+void nonLISTA_PARAMETROS() {
+	if (*token == IDENTIFIER || *token == POSITIVENUMBER || *token == NEGATIVENUMBER || *token == BOOLEAN) {
+		next();
+		nonIDENTIFICADOR();
+		nonINT();
+		nonBOL();
+	}
+}
+
+void nonINT() {
+	if (*token == POSITIVENUMBER || *token == NEGATIVENUMBER) {
+		next();
+	} else {
+		printf("ERROR: was expected INT");
+	}
+}
+
+void nonBOL() {
+	if (*token == BOOLEAN) {
+		next();
+	} else {
+		printf("ERROR: was expected BOOLEAN");
+	}
+}
+
+void nonEXPRESSAO_SIMPLES() {
+	if (*token == SUM || *token == SUBTRACTION) {
+		next();
+		nonTERMO();
+		nonRELACAO();
+	} else {
+		printf("ERROR: invalid expression");
+	}
+}
+
+void nonRELACAO() {
+	if (*token == EQUALS || *token == LESSEQUAL || *token == GREATEREQUAL || *token == DIFF || *token == LESSTHAN || *token == GREATERTHAN) {
+		next();
+	} else {
+		printf("ERROR: invalid expression");
+	}
+}
+
+void nonTERMO() {
+	if (*token == MULTIPLICATION ||*token == DIVISION) {
+		next();
+		nonFATOR();
+	} else {
+		printf("ERROR: invalid expression");
+	}
+
+}
+
+void nonFATOR() {
+	if (*token == IDENTIFIER || *token == NEGATIVENUMBER || *token == POSITIVENUMBER || *token == BOOLEAN) {
+		next();
+		nonEXPRESSAO_SIMPLES();
+	}
+}
+
+
+/* Verifica se entrada é um número - [0 - 9]*/
+int isNumber(char n) {
+	if (n == '0' || n == '1' || n == '2' || n == '3' || n == '4' || n == '5' || n == '6' || n == '7' || n == '8' || n == '9') {
+		return 1;
+	}
+
+	return 0;
+}
+
+/* Verifica se entrada é uma letra de A-z */
+int isLetter(char c) {
+	int a = (int) c;
+	if ((a > 96 && a < 123) || (a > 64 && a < 91)) {
+		return 1;
+	}
+
+	return 0;
+}
+
+/* Funcao auxiliar para definir se é um valor positivo, negativo ou um identificador*/
+int needValue(char aux[]) {
+	int c;
+
+	c = atoi(aux);
+
+	if (c == POSITIVENUMBER || c == NEGATIVENUMBER || c == IDENTIFIER) {
+		return 1;
+	}
+
+	return 0;
+}
+
+/* Lê o arquivo com o código proposto */
+void readFile(char text[], char filename[]) {
+	FILE *inputFile;
+	inputFile = fopen(filename, "r");
+	char line[400];
+
+	if (inputFile) {
+		while (fscanf(inputFile, "%s ", line) != EOF) {
+			strcat(line, " ");
+			strcat(text, line);
+		}
+		fclose(inputFile);
+	}
+}
+
+/* Escreve os resultados no arquivo de saida */
+void writeFile(char result[], int pos, char filename[]) {
+	int i, j, k;
+	j = 0;
+	char aux[100];
+
+	for (i = 0; i < pos; i++) {
+		aux[j] = result[i];
+		j++;
+
+		if (result[i] == ' ') {
+			if (needValue(aux)) {
+				for (k = i + 1; result[k] != ' '; k++, i++) {
+					i++;
+				}
+			}
+
+			result[i] = '\n';
+			j = 0;
+			aux[0] = '\0';
+		}
+	}
+
+	FILE *outputFile;
+	outputFile = fopen(filename, "w+");
+	fprintf(outputFile, "%s", result);
+	fclose(outputFile);
+}
+
+char* getValue(char text[], int pos) {
+	char *value;
+	int i, j, count;
+
+	count = 0;
+
+	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
+		count++;
+	}
+
+	value = malloc(2 * count * sizeof(char));
+	j = 0;
+
+	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
+		value[j] = text[i - count + 1 + (2 * j)];
+		j++;
+	}
+
+	printf("Value: %s\n", value);
+
+	return value;
+}
+
 /*
-void next() {
+   void next() {
    char res[100];
    int len;
    TOKEN token;
@@ -1010,10 +993,10 @@ void next() {
    lookahead = (char *) malloc(len * sizeof(char));
    strcpy(lookahead, res);
 
-	// se houver comentario descarta e vai para a proxima entrada
-	if (strcmp(lookahead, COMMENTS) == 0) {
-		match();
-	}
+// se houver comentario descarta e vai para a proxima entrada
+if (strcmp(lookahead, COMMENTS) == 0) {
+match();
+}
 }
 */
 
