@@ -1,0 +1,58 @@
+programa correto ; 
+	inteiro a , b , c ;
+	booleano d , e , f ;
+	procedimento proc ( inteiro a , booleano r )
+
+	inteiro k , b , c ;
+ 
+	booleano d , e , f ;
+ 
+	escreva ( a ) ;
+	a = 1 ;
+
+	se ( a < 1 ) 
+		entao
+ 
+			a = 12 ;
+
+		fimse
+	escreva ( a ) ;
+	fimprocedimento
+
+	a = 1 ; 
+	b = 10 ;
+
+	c = 11 ;
+
+ 	a = b + c ; 
+	d = verdadeiro ; 
+	e = falso ; 
+	f = verdadeiro ;
+	escreva ( b ) ;
+	se ( d ) entao
+
+		a = 20 ; 
+		b = 10 mul c ; 
+		c = a div b ; 
+	fimse
+ 
+	enquanto ( a > 1 ) faca 
+		se ( b > 10 ) entao
+			b = 2 ;
+		senao
+ 
+			a = a - 1 ;
+ 
+		fimse
+
+	
+		proc ( a , verdadeiro ) ;
+ 
+
+		/* Este e um comentaria, sera descartado na analise. */ 
+	fimenquanto 
+
+	a = ( 123 + a ) div 2 ;
+
+
+fimprograma
