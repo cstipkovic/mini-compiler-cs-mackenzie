@@ -18,6 +18,7 @@ typedef struct token {
 char *lookahead;
 char *txt;
 char *results;
+int pos = 0;
 
 /* Constants codes */
 #define IDENTIFIER       1000
@@ -985,7 +986,9 @@ void writeFile(char result[], int pos, char filename[]) {
 
 void getToken(TOKEN *t) {
 	char res[800];
-	int pos = 0;
+	/*int pos = 0;*/
+
+
 	TOKEN token;
 	if (pos < strlen(txt)) {
 		token = scanner(txt, &pos);
