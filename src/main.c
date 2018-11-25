@@ -756,9 +756,15 @@ void nonIDENTIFICADOR() {
 		next();
 		if (char2int(lookahead) == COMMA) {
 		    next();
+		    nonPARTE_DECLARACOE_VARIAVEIS();
 		}
 		if (char2int(lookahead) == ASSIGNMENT) {
 		    next();
+            nonPARTE_DECLARACOE_VARIAVEIS();
+		    if (char2int(lookahead) == SEMICOLON) {
+		        next();
+                nonPARTE_DECLARACOE_FUNCOES();
+		    }
 		}
 	} else {
 		printf("ERROR: invalid IDENTIFIER\n");
