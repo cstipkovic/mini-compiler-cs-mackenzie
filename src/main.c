@@ -754,26 +754,33 @@ void nonLISTA_IDENTIFICADORES() {
 }
 
 void nonIDENTIFICADOR() {
-	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 	if (char2int(lookahead) == IDENTIFIER) {
 		next();
 		if (char2int(lookahead) == COMMA) {
-		    next();
-		    nonIDENTIFICADOR();
+			next();
+			nonIDENTIFICADOR();
 		}
-	} else {
+
 		if (char2int(lookahead) == SEMICOLON) {
 			next();
 			nonBLOCO();
+		}
+
+		if (char2int(lookahead) == BRACEOPEN || char2int(lookahead) == BRACECLOSE) {
+			/*next();*/
+			nonBLOCO();
+		}
+
+		if (char2int(lookahead) == PARENTHESISOPEN || char2int(lookahead) == PARENTHESISCLOSE) {
+			/*next();*/
+			nonBLOCO();
 		} else {
-			if (char2int(lookahead) == BRACEOPEN) {
-				next();
-				nonBLOCO();
-			} else {
+			if (!char2int(lookahead) == END) {
 				printf("ERROR: invalid IDENTIFIER\n");
 			}
 		}
 	}
+	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 }
 
 void nonPARAMETROS_FORMAIS() {
