@@ -21,16 +21,16 @@ char *results;
 int pos = 0;
 
 /* Constants codes */
-#define IDENTIFIER       1000
-#define BOOLEAN          1001
-#define WHILE            1002
-#define PROGRAM          1003
-#define PRINT            1004
-#define VOID             1005
-#define IF               1006
-#define INT              1007
-#define TRUE_            1008
-#define FALSE_           1009
+#define IDENTIFIER       10240
+#define BOOLEAN          10241
+#define WHILE            10242
+#define PROGRAM          10243
+#define PRINT            10244
+#define VOID             10245
+#define IF               10246
+#define INT              10247
+#define TRUE_            10248
+#define FALSE_           10249
 #define ELSE             1010
 #define COMMENTS         1011
 #define DIVISION         1012
@@ -745,7 +745,7 @@ void nonTIPO() {
 	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
-		/* verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro*/
+		/* TODO: verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro */
 		printf("t: %s\n", lookahead);
 		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
 	}
@@ -769,9 +769,9 @@ void nonIDENTIFICADOR() {
 		}
 
 		if (char2int(lookahead) == ASSIGNMENT) {
-			/*Incluir o next() para adicionar o valor na tabela de valores*/
+			/* TODO: Incluir o next() para adicionar o valor na tabela de valores */
 			next();
-			/*Checar se o valor condis com o tipo declarado, caso contrario laçar erro*/
+			/* TODO: Checar se o valor condis com o tipo declarado, caso contrario laçar erro */
 			next();
 		}
 
@@ -816,7 +816,6 @@ void nonCOMANDO() {
 
 void nonATRIBUICAO() {
 	if (char2int(lookahead) == ASSIGNMENT) {
-		/* TODO: SERA QUE PRECISA DE NEXT? */
 		next();
 		nonIDENTIFICADOR();
 		nonEXPRESSAO();
@@ -987,7 +986,7 @@ void readFile(char filename[]) {
 	printf("Reading input file %s\n", filename);
 	FILE *file;
 	file = fopen(filename,"r");
-	char line[800];
+	char line[1024];
 	if (file) {
 		while (fscanf(file,"%s ", line) != EOF) {
 			strcat(line, " ");
@@ -1005,7 +1004,7 @@ void readFile(char filename[]) {
 void writeFile(char result[], int pos, char filename[]) {
 	int i, j, k;
 	j = 0;
-	char aux[100];
+	char aux[1024];
 
 	for (i = 0; i < pos; i++) {
 		aux[j] = result[i];
@@ -1033,7 +1032,7 @@ void writeFile(char result[], int pos, char filename[]) {
 
 /* Lê o próximo token da da entrada*/
 void getToken(TOKEN *t) {
-	char res[800];
+	char res[1024];
 
 	TOKEN token;
 	if (pos < strlen(txt)) {
@@ -1065,7 +1064,7 @@ void getToken(TOKEN *t) {
 }
 
 void next() {
-	char res[100];
+	char res[1024];
 	int len;
 	TOKEN token;
 	getToken(&token);
@@ -1083,7 +1082,7 @@ void next() {
 
 void lexical() {
 	int i;
-	int len = 800;
+	int len = 1024;
 	int pos = 0;
 
 	txt = (char *) malloc(len * sizeof(char));
