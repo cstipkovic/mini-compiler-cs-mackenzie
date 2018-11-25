@@ -756,18 +756,15 @@ void nonIDENTIFICADOR() {
 		next();
 		if (char2int(lookahead) == COMMA) {
 		    next();
-		    nonPARTE_DECLARACOE_VARIAVEIS();
-		}
-		if (char2int(lookahead) == ASSIGNMENT) {
-		    next();
-            nonPARTE_DECLARACOE_VARIAVEIS();
-		    if (char2int(lookahead) == SEMICOLON) {
-		        next();
-                nonPARTE_DECLARACOE_FUNCOES();
-		    }
+		    nonIDENTIFICADOR();
 		}
 	} else {
-		printf("ERROR: invalid IDENTIFIER\n");
+		if (char2int(lookahead) == SEMICOLON) {
+			next();
+			nonBLOCO();
+		} else {
+			printf("ERROR: invalid IDENTIFIER\n");
+		}
 	}
 }
 
@@ -882,30 +879,35 @@ void nonBOL() {
 }
 
 void nonEXPRESSAO_SIMPLES() {
-	if (char2int(lookahead) == SUM || char2int(lookahead) == SUBTRACTION) {
+	if (char2int(lookahead) == IDENTIFIER) {
 		next();
-		nonTERMO();
+		if (char2int(lookahead) == PARENTHESISCLOSE) {
+			next();
+			nonBLOCO();expected
+		}
 		nonRELACAO();
-	} else {
-		printf("ERROR: invalid expression\n");
 	}
 }
 
 void nonRELACAO() {
 	if (char2int(lookahead) == EQUALS || char2int(lookahead) == LESSEQUAL || char2int(lookahead) == GREATEREQUAL || char2int(lookahead) == DIFF || char2int(lookahead) == LESSTHAN || char2int(lookahead) == GREATERTHAN) {
 		next();
+		nonEXPRESSAO();
 	} else {
 		printf("ERROR: invalid expression\n");
 	}
 }
 
 void nonTERMO() {
+	printf("TERMO");
+	/*
 	if (char2int(lookahead) == MULTIPLICATION ||char2int(lookahead) == DIVISION) {
 		next();
 		nonFATOR();
 	} else {
 		printf("ERROR: invalid expression\n");
 	}
+	 */
 
 }
 
