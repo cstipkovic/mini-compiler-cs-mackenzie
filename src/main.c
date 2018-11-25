@@ -669,7 +669,7 @@ void nonPROGRAMA() {
 						printf("ERROR: incomplete file reading\n");
 					}
 				} else {
-					printf("ERROR: expected } to open a function block\n");
+					printf("ERROR: expected } to close a function block\n");
 				}
 			} else {
 				printf("ERROR: expected { to open a function block\n");
@@ -725,7 +725,8 @@ void nonDECLARACAO_FUNCOES() {
 					if (char2int(lookahead) == BRACECLOSE) {
 						next();
 					} else {
-						printf("ERROR: expected } to open a function block\n");
+						printf("t: %s \n", lookahead);
+						printf("ERROR: expected } to close a function block\n");
 					}
 				} else {
 					printf("ERROR: expected { to open a function block\n");
@@ -745,6 +746,8 @@ void nonTIPO() {
 	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
+		/* verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro*/
+		printf("t: %s\n", lookahead);
 		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
 	}
 }
@@ -761,13 +764,20 @@ void nonIDENTIFICADOR() {
 			nonIDENTIFICADOR();
 		}
 
-		if (char2int(lookahead) == SEMICOLON) {
-			next();
+		if (char2int(lookahead) == BRACEOPEN || char2int(lookahead) == BRACECLOSE) {
+			/*next();*/
 			nonBLOCO();
 		}
 
-		if (char2int(lookahead) == BRACEOPEN || char2int(lookahead) == BRACECLOSE) {
-			/*next();*/
+		if (char2int(lookahead) == ASSIGNMENT) {
+			/*Incluir o next() para adicionar o valor na tabela de valores*/
+			next();
+			/*Checar se o valor condis com o tipo declarado, caso contrario laçar erro*/
+			next();
+		}
+
+		if (char2int(lookahead) == SEMICOLON) {
+			next();
 			nonBLOCO();
 		}
 
@@ -881,6 +891,7 @@ void nonINT() {
 	if (char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == NEGATIVENUMBER) {
 		next();
 	} else {
+		printf("t: %s\n", lookahead);
 		printf("ERROR: was expected INT\n");
 	}
 }
@@ -889,6 +900,7 @@ void nonBOL() {
 	if (char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
+		printf("t: %s\n", lookahead);
 		printf("ERROR: was expected BOOLEAN\n");
 	}
 }
