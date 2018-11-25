@@ -754,6 +754,12 @@ void nonIDENTIFICADOR() {
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 	if (char2int(lookahead) == IDENTIFIER) {
 		next();
+		if (char2int(lookahead) == COMMA) {
+		    next();
+		}
+		if (char2int(lookahead) == ASSIGNMENT) {
+		    next();
+		}
 	} else {
 		printf("ERROR: invalid IDENTIFIER\n");
 	}
@@ -984,6 +990,8 @@ void writeFile(char result[], int pos, char filename[]) {
 	fclose(outputFile);
 }
 
+
+/* Lê o próximo token da da entrada*/
 void getToken(TOKEN *t) {
 	char res[800];
 	/*int pos = 0;*/
