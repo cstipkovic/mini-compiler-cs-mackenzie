@@ -126,7 +126,7 @@ TOKEN scanner(char text[], int *pos) {
 
 	(*pos)--;
 
-	q0:
+q0:
 	(*pos)++;
 	if (text[*pos] == '_') goto q1;
 	else if (text[*pos] == 'b') goto q2;
@@ -154,497 +154,497 @@ TOKEN scanner(char text[], int *pos) {
 	else if (text[*pos] == '}') goto q91;
 	else return token;
 
-	q1:
+q1:
 	(*pos)++;
 	if (isLetter(text[*pos])) goto q68;
 	else return token;
 
-	q2:
+q2:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q3;
 	else return token;
 
-	q3:
+q3:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q4;
 	else return token;
 
-	q4:
+q4:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q5;
 	else return token;
 
-	q5:
+q5:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q6;
 	else return token;
 
-	q6:
+q6:
 	(*pos)++;
 	token.name = BOOLEAN;
 	return token;
 
-	q7:
+q7:
 	(*pos)++;
 	if (text[*pos] == 'h') goto q8;
 	else return token;
 
-	q8:
+q8:
 	(*pos)++;
 	if (text[*pos] == 'i') goto q9;
 	else return token;
 
-	q9:
+q9:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q10;
 	else return token;
 
-	q10:
+q10:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q11;
 	else return token;
 
-	q11:
+q11:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q12;
 	else return token;
 
-	q12:
+q12:
 	(*pos)++;
 	token.name = WHILE;
 	return token;
 
-	q13:
+q13:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q14;
 	else return token;
 
-	q14:
+q14:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q15;
 	else if (text[*pos] == 'i') goto q21;
 	else return token;
 
-	q15:
+q15:
 	(*pos)++;
 	if (text[*pos] == 'g') goto q16;
 	else return token;
 
-	q16:
+q16:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q17;
 	else return token;
 
-	q17:
+q17:
 	(*pos)++;
 	if (text[*pos] == 'a') goto q18;
 	else return token;
 
-	q18:
+q18:
 	(*pos)++;
 	if (text[*pos] == 'm') goto q19;
 	else return token;
 
-	q19:
+q19:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q20;
 	else return token;
 
-	q20:
+q20:
 	(*pos)++;
 	token.name = PROGRAM;
 	return token;
 
-	q21:
+q21:
 	(*pos)++;
 	if (text[*pos] == 'n') goto q22;
 	else return token;
 
-	q22:
+q22:
 	(*pos)++;
 	if (text[*pos] == 't') goto q23;
 	else return token;
 
-	q23:
+q23:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q24;
 	else return token;
 
-	q24:
+q24:
 	(*pos)++;
 	token.name = PRINT;
 	return token;
 
-	q25:
+q25:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q26;
 	else return token;
 
-	q26:
+q26:
 	(*pos)++;
 	if (text[*pos] == 'i') goto q27;
 	else return token;
 
-	q27:
+q27:
 	(*pos)++;
 	if (text[*pos] == 'd') goto q28;
 	else return token;
 
-	q28:
+q28:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q29;
 	else return token;
 
-	q29:
+q29:
 	(*pos)++;
 	token.name = VOID;
 	return token;
 
-	q30:
+q30:
 	(*pos)++;
 	if (text[*pos] == 'f') goto q31;
 	else if (text[*pos] == 'n') goto q32;
 	else return token;
 
-	q31:
+q31:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q34;
 	else return token;
 
-	q32:
+q32:
 	(*pos)++;
 	if (text[*pos] == 't') goto q33;
 	else return token;
 
-	q33:
+q33:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q35;
 	else return token;
 
-	q34:
+q34:
 	(*pos)++;
 	token.name = IF;
 	return token;
 
-	q35:
+q35:
 	(*pos)++;
 	token.name = INT;
 	return token;
 
-	q36:
+q36:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q37;
 	else return token;
 
-	q37:
+q37:
 	(*pos)++;
 	if (text[*pos] == 'u') goto q38;
 	else return token;
 
-	q38:
+q38:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q39;
 	else return token;
 
-	q39:
+q39:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q40;
 	else return token;
 
-	q40:
+q40:
 	(*pos)++;
 	token.name = TRUE_;
 	return token;
 
-	q41:
+q41:
 	(*pos)++;
 	if (text[*pos] == 'a') goto q42;
 	else return token;
 
-	q42:
+q42:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q43;
 	else return token;
 
-	q43:
+q43:
 	(*pos)++;
 	if (text[*pos] == 's') goto q44;
 	else return token;
 
-	q44:
+q44:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q45;
 	else return token;
 
-	q45:
+q45:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q46;
 	else return token;
 
-	q46:
+q46:
 	(*pos)++;
 	token.name = FALSE_;
 	return token;
 
-	q47:
+q47:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q48;
 	else return token;
 
-	q48:
+q48:
 	(*pos)++;
 	if (text[*pos] == 's') goto q49;
 	else return token;
 
-	q49:
+q49:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q50;
 	else return token;
 
-	q50:
+q50:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q51;
 	else return token;
 
-	q51:
+q51:
 	(*pos)++;
 	token.name = ELSE;
 	return token;
 
-	q52:
+q52:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q52;
 	else if (text[*pos] == ' ') goto q53;
 	else return token;
 
-	q53:
+q53:
 	(*pos)++;
 	token.name = POSITIVENUMBER;
 	return token;
 
-	q54:
+q54:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q55;
 	else if (text[*pos] == ' ') goto q57;
 	else return token;
 
-	q55:
+q55:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q55;
 	else if (text[*pos] == ' ') goto q56;
 	else return token;
 
-	q56:
+q56:
 	(*pos)++;
 	token.name = NEGATIVENUMBER;
 	return token;
 
-	q57:
+q57:
 	(*pos)++;
 	token.name = SUBTRACTION;
 	return token;
 
-	q58:
+q58:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q59;
 	else return token;
 
-	q59:
+q59:
 	(*pos)++;
 	token.name = SUM;
 	return token;
 
-	q60:
+q60:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q61;
 	else return token;
 
-	q61:
+q61:
 	(*pos)++;
 	token.name = MULTIPLICATION;
 	return token;
 
-	q62:
+q62:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q63;
 	else if (text[*pos] == '*') goto q93;
 	else return token;
 
-	q63:
+q63:
 	(*pos)++;
 	token.name = DIVISION;
 	return token;
 
-	q64:
+q64:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q65;
 	else if (text[*pos] == '=') goto q66;
 	else return token;
 
-	q65:
+q65:
 	(*pos)++;
 	token.name = LESSTHAN;
 	return token;
 
-	q66:
+q66:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q67;
 	else return token;
 
-	q67:
+q67:
 	(*pos)++;
 	token.name = LESSEQUAL;
 	return token;
 
-	q68:
+q68:
 	(*pos)++;
 	if (isLetter(text[*pos])) goto q68;
 	else if (text[*pos] == ' ') goto q69;
 	else return token;
 
-	q69:
+q69:
 	(*pos)++;
 	token.name = IDENTIFIER;
 	return token;
 
-	q70:
+q70:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q71;
 	else if (text[*pos] == '=') goto q72;
 	else return token;
 
-	q71:
+q71:
 	(*pos)++;
 	token.name = GREATERTHAN;
 	return token;
 
-	q72:
+q72:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q73;
 	else return token;
 
-	q73:
+q73:
 	(*pos)++;
 	token.name = GREATEREQUAL;
 	return token;
 
-	q74:
+q74:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q75;
 	else if (text[*pos] == '=') goto q76;
 	else return token;
 
-	q75:
+q75:
 	(*pos)++;
 	token.name = ASSIGNMENT;
 	return token;
 
-	q76:
+q76:
 	(*pos)++;
 	if (text[*pos] == '=') goto q77;
 	else return token;
 
-	q77:
+q77:
 	(*pos)++;
 	token.name = EQUALS;
 	return token;
 
-	q78:
+q78:
 	(*pos)++;
 	if (text[*pos] == '=') goto q79;
 	else return token;
 
-	q79:
+q79:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q80;
 	else return token;
 
-	q80:
+q80:
 	(*pos)++;
 	token.name = DIFF;
 	return token;
 
-	q81:
+q81:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q82;
 	else return token;
 
-	q82:
+q82:
 	(*pos)++;
 	token.name = PARENTHESISOPEN;
 	return token;
 
-	q83:
+q83:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q84;
 	else return token;
 
-	q84:
+q84:
 	(*pos)++;
 	token.name = PARENTHESISCLOSE;
 	return token;
 
-	q85:
+q85:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q86;
 	else return token;
 
-	q86:
+q86:
 	(*pos)++;
 	token.name = COMMA;
 	return token;
 
-	q87:
+q87:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q88;
 	else return token;
 
-	q88:
+q88:
 	(*pos)++;
 	token.name = SEMICOLON;
 	return token;
 
-	q89:
+q89:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q90;
 	else return token;
 
-	q90:
+q90:
 	(*pos)++;
 	token.name = BRACEOPEN;
 	return token;
 
-	q91:
+q91:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q92;
 	else return token;
 
-	q92:
+q92:
 	(*pos)++;
 	token.name = BRACECLOSE;
 	return token;
 
-	q93:
+q93:
 	(*pos)++;
 	if (text[*pos] != '*') goto q94;
 	else return token;
 
-	q94:
+q94:
 	(*pos)++;
 	if (text[*pos] == '*') goto q95;
 	else return token;
 
-	q95:
+q95:
 	(*pos)++;
 	if (text[*pos] == '/') goto q96;
 	else return token;
 
-	q96:
+q96:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q97;
 	else return token;
 
-	q97:
+q97:
 	(*pos)++;
 	token.name = COMMENTS;
 	return token;
@@ -782,7 +782,7 @@ void nonCOMANDO() {
 }
 
 void nonATRIBUICAO() {
-	if (*lookahead  == ASSIGNMENT) {
+	if (char2int(lookahead) == ASSIGNMENT) {
 		/* TODO: SERA QUE PRECISA DE NEXT? */
 		next();
 		nonIDENTIFICADOR();
@@ -949,7 +949,7 @@ void readFile(char filename[]) {
 		}
 		fclose(arquivo_entrada);
 	} else {
-		printf("\nFile not found.%s\n");
+		printf("\nFile not found.\n");
 		exit(0);
 	}
 }
@@ -1062,7 +1062,6 @@ void next() {
 		next();
 	}
 }
-
 
 void lexical() {
 	int i;
