@@ -59,8 +59,8 @@ int pos = 0;
 /* Syntax */
 void nonPROGRAMA();
 void nonBLOCO();
-void nonPARTE_DECLARACOE_VARIAVEIS();
-void nonPARTE_DECLARACOE_FUNCOES();
+void nonPARTE_DECLARACOES_VARIAVEIS();
+void nonPARTE_DECLARACOES_FUNCOES();
 void nonCOMANDO_COMPOSTO();
 
 /* Defintions */
@@ -663,7 +663,7 @@ void nonPROGRAMA() {
 				nonBLOCO();
 				if (char2int(lookahead) == BRACECLOSE) {
 					next();
-					if (char2int(lookahead) == EOF) {
+					if (char2int(lookahead) == END) {
 						printf("SUCCESS\n");
 					} else {
 						printf("ERROR: incomplete file reading\n");
@@ -683,17 +683,20 @@ void nonPROGRAMA() {
 }
 
 void nonBLOCO() {
-	nonPARTE_DECLARACOE_VARIAVEIS();
-	nonPARTE_DECLARACOE_FUNCOES();
+	nonPARTE_DECLARACOES_VARIAVEIS();
+	nonPARTE_DECLARACOES_FUNCOES();
 	nonCOMANDO_COMPOSTO();
+
 }
 
-void nonPARTE_DECLARACOE_VARIAVEIS() {
+void nonPARTE_DECLARACOES_VARIAVEIS() {
 	nonDECLARACAO_VARIAVEIS();
 }
 
-void nonPARTE_DECLARACOE_FUNCOES() {
-	nonDECLARACAO_FUNCOES();
+void nonPARTE_DECLARACOES_FUNCOES() {
+	if (char2int(lookahead) == VOID) {
+		nonDECLARACAO_FUNCOES();
+	}
 }
 
 void nonCOMANDO_COMPOSTO() {
@@ -701,7 +704,7 @@ void nonCOMANDO_COMPOSTO() {
 }
 
 void nonDECLARACAO_VARIAVEIS() {
-	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
+	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN || char2int(lookahead) == IDENTIFIER ) {
 		nonTIPO();
 		nonLISTA_IDENTIFICADORES();
 	}
@@ -763,7 +766,12 @@ void nonIDENTIFICADOR() {
 			next();
 			nonBLOCO();
 		} else {
-			printf("ERROR: invalid IDENTIFIER\n");
+			if (char2int(lookahead) == BRACEOPEN) {
+				next();
+				nonBLOCO();
+			} else {
+				printf("ERROR: invalid IDENTIFIER\n");
+			}
 		}
 	}
 }
@@ -883,7 +891,7 @@ void nonEXPRESSAO_SIMPLES() {
 		next();
 		if (char2int(lookahead) == PARENTHESISCLOSE) {
 			next();
-			nonBLOCO();expected
+			nonBLOCO();
 		}
 		nonRELACAO();
 	}
@@ -1002,8 +1010,6 @@ void writeFile(char result[], int pos, char filename[]) {
 /* Lê o próximo token da da entrada*/
 void getToken(TOKEN *t) {
 	char res[800];
-	/*int pos = 0;*/
-
 
 	TOKEN token;
 	if (pos < strlen(txt)) {
@@ -1026,9 +1032,10 @@ void getToken(TOKEN *t) {
 		(*t).name = token.name;
 		(*t).value = token.value;
 	} else {
+		(*t).name = END;
 		writeFile(results, strlen(results), "syntax_analysis.txt");
-		printf("\nLexical analysis SUCESS.\n");
-		printf("\nTokens file writed SUCESS [syntax_analysis.txt]\n\n");
+		printf("\nLexical analysis SUCCESS.\n");
+		printf("\nTokens file written SUCCESS [syntax_analysis.txt]\n\n");
 		(*t).name = END;
 	}
 }
