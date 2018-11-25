@@ -725,7 +725,6 @@ void nonDECLARACAO_FUNCOES() {
 					if (char2int(lookahead) == BRACECLOSE) {
 						next();
 					} else {
-						printf("t: %s \n", lookahead);
 						printf("ERROR: expected } to close a function block\n");
 					}
 				} else {
@@ -835,25 +834,45 @@ void nonCHAMADA_PROCEDIMENTO() {
 	nonLISTA_PARAMETROS();
 }
 
+/* Avalia abertura e fechamento de chaves para o bloco IF e/ou ELSE */
+void auxAVALIA_BLOCO_COMPOSTO() {
+	if (char2int(lookahead) == BRACEOPEN) {
+		next();
+		nonCOMANDO_COMPOSTO();
+		if (char2int(lookahead) == BRACECLOSE) {
+			next();
+		} else {
+			printf("ERROR: expected } to close a function block\n");
+		}
+	} else {
+		printf("ERROR: expected { to open a function block\n");
+	}
+}
+
+/* Avalia comando condicional IF/ELSE */
 void nonCOMANDO_CONDICIONAL() {
 	if (char2int(lookahead) == IF) {
 		next();
-		nonEXPRESSAO();
-		nonCOMANDO_COMPOSTO();
-		if (char2int(lookahead) == BRACEOPEN) {
-			if (char2int(lookahead) == ELSE) {
+		if (char2int(lookahead) == PARENTHESISOPEN) {
+			next();
+			nonEXPRESSAO();
+			if (char2int(lookahead) == PARENTHESISCLOSE) {
 				next();
-				nonCOMANDO_COMPOSTO();
-				if (char2int(lookahead) == BRACECLOSE) {
-					next();
-				} else {
-					printf("ERROR: expected } to open a function block\n");
-				}
+				auxAVALIA_BLOCO_COMPOSTO();
+			} else {
+				printf("ERROR: expected ) to close a function block\n");
 			}
 		} else {
-			printf("ERROR: expected { to open a function block\n");
+			printf("ERROR: expected ( to open a function block\n");
 		}
 	}
+
+	if (char2int(lookahead) == ELSE) {
+		next();
+		auxAVALIA_BLOCO_COMPOSTO();
+	}
+
+	nonBLOCO();
 }
 
 void nonCOMANDO_REPETITIVO() {
@@ -875,7 +894,9 @@ void nonCOMANDO_REPETITIVO() {
 }
 
 void nonEXPRESSAO() {
+	/* TODO: Avaliar qual das funções deve ser chamada segundo lookahead */
 	nonEXPRESSAO_SIMPLES();
+	nonRELACAO();
 }
 
 void nonLISTA_PARAMETROS() {
@@ -906,14 +927,7 @@ void nonBOL() {
 }
 
 void nonEXPRESSAO_SIMPLES() {
-	if (char2int(lookahead) == IDENTIFIER) {
-		next();
-		if (char2int(lookahead) == PARENTHESISCLOSE) {
-			next();
-			nonBLOCO();
-		}
-		nonRELACAO();
-	}
+		nonTERMO();
 }
 
 void nonRELACAO() {
@@ -926,16 +940,7 @@ void nonRELACAO() {
 }
 
 void nonTERMO() {
-	printf("TERMO");
-	/*
-	if (char2int(lookahead) == MULTIPLICATION ||char2int(lookahead) == DIVISION) {
-		next();
-		nonFATOR();
-	} else {
-		printf("ERROR: invalid expression\n");
-	}
-	 */
-
+	nonFATOR();
 }
 
 void nonFATOR() {
