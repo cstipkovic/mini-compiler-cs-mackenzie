@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 /* Struct do token */
 typedef struct token {
 	int name;
@@ -90,17 +90,35 @@ void nonFATOR();
 
 /* Validation functions */
 
-/* int isINT();          -> using function isNumber to validate it. */
-/* int isDIGITO(char n); -> using function isNumber to validate it. */
-/* int isLETRA(char c);  -> using function isLetter to validate it. */
+/*
+ * int isINT();          -> using function isNumber to validate it.
+ * int isDIGITO(char n); -> using function isNumber to validate it.
+ * int isLETRA(char c);  -> using function isLetter to validate it.
+ */
 
 /* Extra functions to help at validations */
 int isNumber(char n);
 int isLetter(char c);
+int char2int(char *c);
 void getFirstToken();
 void next();
 
-/* Retorna a saida da entrada segundo especificacao do automato */
+int char2int(char *c) {
+	int i;
+	int value = 0;
+	for (i = 0; i < strlen(c); i++) {
+		int len = strlen(c);
+		int t = 1;
+		while ((len - i) > 1) {
+			t *= 10;
+			len--;
+		}
+		value += t * (lookahead[i] - 48);
+	}
+	return value;
+}
+
+/* Retorna a saida da entrada segundo especificacao do automato*/
 TOKEN scanner(char text[], int *pos) {
 	TOKEN token;
 	token.name = ERROR;
@@ -108,7 +126,7 @@ TOKEN scanner(char text[], int *pos) {
 
 	(*pos)--;
 
-q0:
+	q0:
 	(*pos)++;
 	if (text[*pos] == '_') goto q1;
 	else if (text[*pos] == 'b') goto q2;
@@ -136,515 +154,516 @@ q0:
 	else if (text[*pos] == '}') goto q91;
 	else return token;
 
-q1:
+	q1:
 	(*pos)++;
 	if (isLetter(text[*pos])) goto q68;
 	else return token;
 
-q2:
+	q2:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q3;
 	else return token;
 
-q3:
+	q3:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q4;
 	else return token;
 
-q4:
+	q4:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q5;
 	else return token;
 
-q5:
+	q5:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q6;
 	else return token;
 
-q6:
+	q6:
 	(*pos)++;
 	token.name = BOOLEAN;
 	return token;
 
-q7:
+	q7:
 	(*pos)++;
 	if (text[*pos] == 'h') goto q8;
 	else return token;
 
-q8:
+	q8:
 	(*pos)++;
 	if (text[*pos] == 'i') goto q9;
 	else return token;
 
-q9:
+	q9:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q10;
 	else return token;
 
-q10:
+	q10:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q11;
 	else return token;
 
-q11:
+	q11:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q12;
 	else return token;
 
-q12:
+	q12:
 	(*pos)++;
 	token.name = WHILE;
 	return token;
 
-q13:
+	q13:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q14;
 	else return token;
 
-q14:
+	q14:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q15;
 	else if (text[*pos] == 'i') goto q21;
 	else return token;
 
-q15:
+	q15:
 	(*pos)++;
 	if (text[*pos] == 'g') goto q16;
 	else return token;
 
-q16:
+	q16:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q17;
 	else return token;
 
-q17:
+	q17:
 	(*pos)++;
 	if (text[*pos] == 'a') goto q18;
 	else return token;
 
-q18:
+	q18:
 	(*pos)++;
 	if (text[*pos] == 'm') goto q19;
 	else return token;
 
-q19:
+	q19:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q20;
 	else return token;
 
-q20:
+	q20:
 	(*pos)++;
 	token.name = PROGRAM;
 	return token;
 
-q21:
+	q21:
 	(*pos)++;
 	if (text[*pos] == 'n') goto q22;
 	else return token;
 
-q22:
+	q22:
 	(*pos)++;
 	if (text[*pos] == 't') goto q23;
 	else return token;
 
-q23:
+	q23:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q24;
 	else return token;
 
-q24:
+	q24:
 	(*pos)++;
 	token.name = PRINT;
 	return token;
 
-q25:
+	q25:
 	(*pos)++;
 	if (text[*pos] == 'o') goto q26;
 	else return token;
 
-q26:
+	q26:
 	(*pos)++;
 	if (text[*pos] == 'i') goto q27;
 	else return token;
 
-q27:
+	q27:
 	(*pos)++;
 	if (text[*pos] == 'd') goto q28;
 	else return token;
 
-q28:
+	q28:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q29;
 	else return token;
 
-q29:
+	q29:
 	(*pos)++;
 	token.name = VOID;
 	return token;
 
-q30:
+	q30:
 	(*pos)++;
 	if (text[*pos] == 'f') goto q31;
 	else if (text[*pos] == 'n') goto q32;
 	else return token;
 
-q31:
+	q31:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q34;
 	else return token;
 
-q32:
+	q32:
 	(*pos)++;
 	if (text[*pos] == 't') goto q33;
 	else return token;
 
-q33:
+	q33:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q35;
 	else return token;
 
-q34:
+	q34:
 	(*pos)++;
 	token.name = IF;
 	return token;
 
-q35:
+	q35:
 	(*pos)++;
 	token.name = INT;
 	return token;
 
-q36:
+	q36:
 	(*pos)++;
 	if (text[*pos] == 'r') goto q37;
 	else return token;
 
-q37:
+	q37:
 	(*pos)++;
 	if (text[*pos] == 'u') goto q38;
 	else return token;
 
-q38:
+	q38:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q39;
 	else return token;
 
-q39:
+	q39:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q40;
 	else return token;
 
-q40:
+	q40:
 	(*pos)++;
 	token.name = TRUE_;
 	return token;
 
-q41:
+	q41:
 	(*pos)++;
 	if (text[*pos] == 'a') goto q42;
 	else return token;
 
-q42:
+	q42:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q43;
 	else return token;
 
-q43:
+	q43:
 	(*pos)++;
 	if (text[*pos] == 's') goto q44;
 	else return token;
 
-q44:
+	q44:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q45;
 	else return token;
 
-q45:
+	q45:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q46;
 	else return token;
 
-q46:
+	q46:
 	(*pos)++;
 	token.name = FALSE_;
 	return token;
 
-q47:
+	q47:
 	(*pos)++;
 	if (text[*pos] == 'l') goto q48;
 	else return token;
 
-q48:
+	q48:
 	(*pos)++;
 	if (text[*pos] == 's') goto q49;
 	else return token;
 
-q49:
+	q49:
 	(*pos)++;
 	if (text[*pos] == 'e') goto q50;
 	else return token;
 
-q50:
+	q50:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q51;
 	else return token;
 
-q51:
+	q51:
 	(*pos)++;
 	token.name = ELSE;
 	return token;
 
-q52:
+	q52:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q52;
 	else if (text[*pos] == ' ') goto q53;
 	else return token;
 
-q53:
+	q53:
 	(*pos)++;
 	token.name = POSITIVENUMBER;
 	return token;
 
-q54:
+	q54:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q55;
 	else if (text[*pos] == ' ') goto q57;
 	else return token;
 
-q55:
+	q55:
 	(*pos)++;
 	if (isNumber(text[*pos])) goto q55;
 	else if (text[*pos] == ' ') goto q56;
 	else return token;
 
-q56:
+	q56:
 	(*pos)++;
 	token.name = NEGATIVENUMBER;
 	return token;
 
-q57:
+	q57:
 	(*pos)++;
 	token.name = SUBTRACTION;
 	return token;
 
-q58:
+	q58:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q59;
 	else return token;
 
-q59:
+	q59:
 	(*pos)++;
 	token.name = SUM;
 	return token;
 
-q60:
+	q60:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q61;
 	else return token;
 
-q61:
+	q61:
 	(*pos)++;
 	token.name = MULTIPLICATION;
 	return token;
 
-q62:
+	q62:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q63;
 	else if (text[*pos] == '*') goto q93;
 	else return token;
 
-q63:
+	q63:
 	(*pos)++;
 	token.name = DIVISION;
 	return token;
 
-q64:
+	q64:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q65;
 	else if (text[*pos] == '=') goto q66;
 	else return token;
 
-q65:
+	q65:
 	(*pos)++;
 	token.name = LESSTHAN;
 	return token;
 
-q66:
+	q66:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q67;
 	else return token;
 
-q67:
+	q67:
 	(*pos)++;
 	token.name = LESSEQUAL;
 	return token;
 
-q68:
+	q68:
 	(*pos)++;
 	if (isLetter(text[*pos])) goto q68;
 	else if (text[*pos] == ' ') goto q69;
 	else return token;
 
-q69:
+	q69:
 	(*pos)++;
 	token.name = IDENTIFIER;
 	return token;
 
-q70:
+	q70:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q71;
 	else if (text[*pos] == '=') goto q72;
 	else return token;
 
-q71:
+	q71:
 	(*pos)++;
 	token.name = GREATERTHAN;
 	return token;
 
-q72:
+	q72:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q73;
 	else return token;
 
-q73:
+	q73:
 	(*pos)++;
 	token.name = GREATEREQUAL;
 	return token;
 
-q74:
+	q74:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q75;
 	else if (text[*pos] == '=') goto q76;
 	else return token;
 
-q75:
+	q75:
 	(*pos)++;
 	token.name = ASSIGNMENT;
 	return token;
 
-q76:
+	q76:
 	(*pos)++;
 	if (text[*pos] == '=') goto q77;
 	else return token;
 
-q77:
+	q77:
 	(*pos)++;
 	token.name = EQUALS;
 	return token;
 
-q78:
+	q78:
 	(*pos)++;
 	if (text[*pos] == '=') goto q79;
 	else return token;
 
-q79:
+	q79:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q80;
 	else return token;
 
-q80:
+	q80:
 	(*pos)++;
 	token.name = DIFF;
 	return token;
 
-q81:
+	q81:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q82;
 	else return token;
 
-q82:
+	q82:
 	(*pos)++;
 	token.name = PARENTHESISOPEN;
 	return token;
 
-q83:
+	q83:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q84;
 	else return token;
 
-q84:
+	q84:
 	(*pos)++;
 	token.name = PARENTHESISCLOSE;
 	return token;
 
-q85:
+	q85:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q86;
 	else return token;
 
-q86:
+	q86:
 	(*pos)++;
 	token.name = COMMA;
 	return token;
 
-q87:
+	q87:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q88;
 	else return token;
 
-q88:
+	q88:
 	(*pos)++;
 	token.name = SEMICOLON;
 	return token;
 
-q89:
+	q89:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q90;
 	else return token;
 
-q90:
+	q90:
 	(*pos)++;
 	token.name = BRACEOPEN;
 	return token;
 
-q91:
+	q91:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q92;
 	else return token;
 
-q92:
+	q92:
 	(*pos)++;
 	token.name = BRACECLOSE;
 	return token;
 
-q93:
+	q93:
 	(*pos)++;
 	if (text[*pos] != '*') goto q94;
 	else return token;
 
-q94:
+	q94:
 	(*pos)++;
 	if (text[*pos] == '*') goto q95;
 	else return token;
 
-q95:
+	q95:
 	(*pos)++;
 	if (text[*pos] == '/') goto q96;
 	else return token;
 
-q96:
+	q96:
 	(*pos)++;
 	if (text[*pos] == ' ') goto q97;
 	else return token;
 
-q97:
+	q97:
 	(*pos)++;
 	token.name = COMMENTS;
 	return token;
 }
 
 /* Function implementation */
-void nonPROGRAMA(){
+void nonPROGRAMA() {
 	getFirstToken();
-	if (*lookahead == PROGRAM) {
+	if (char2int(lookahead) == PROGRAM) {
 		next();
-		if (*lookahead == IDENTIFIER) {
+		printf("NEXT: %s\n\n", lookahead);
+		if (char2int(lookahead) == IDENTIFIER) {
 			next();
-			if (*lookahead == BRACEOPEN) {
+			if (char2int(lookahead) == BRACEOPEN) {
 				next();
 				nonBLOCO();
-				if (*lookahead == BRACECLOSE) {
+				if (char2int(lookahead) == BRACECLOSE) {
 					next();
-					if (*lookahead == EOF) {
+					if (char2int(lookahead) == EOF) {
 						printf("SUCCESS\n");
 					} else {
 						printf("ERROR: incomplete file reading\n");
@@ -682,25 +701,25 @@ void nonCOMANDO_COMPOSTO() {
 }
 
 void nonDECLARACAO_VARIAVEIS() {
-	if (*lookahead == INT || *lookahead == BOOLEAN) {
+	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
 		nonTIPO();
 		nonLISTA_IDENTIFICADORES();
 	}
 }
 
 void nonDECLARACAO_FUNCOES() {
-	if (*lookahead == VOID) {
+	if (char2int(lookahead) == VOID) {
 		next();
 		nonIDENTIFICADOR();
-		if (*lookahead == PARENTHESISOPEN) {
+		if (char2int(lookahead) == PARENTHESISOPEN) {
 			next();
 			nonPARAMETROS_FORMAIS();
-			if (*lookahead == PARENTHESISCLOSE) {
+			if (char2int(lookahead) == PARENTHESISCLOSE) {
 				next();
-				if (*lookahead == BRACEOPEN) {
+				if (char2int(lookahead) == BRACEOPEN) {
 					next();
 					nonBLOCO();
-					if (*lookahead == BRACECLOSE) {
+					if (char2int(lookahead) == BRACECLOSE) {
 						next();
 					} else {
 						printf("ERROR: expected } to open a function block\n");
@@ -720,7 +739,7 @@ void nonDECLARACAO_FUNCOES() {
 }
 
 void nonTIPO() {
-	if (*lookahead == INT || *lookahead == BOOLEAN) {
+	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
 		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
@@ -733,7 +752,7 @@ void nonLISTA_IDENTIFICADORES() {
 
 void nonIDENTIFICADOR() {
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
-	if (*lookahead == IDENTIFIER) {
+	if (char2int(lookahead) == IDENTIFIER) {
 		next();
 	} else {
 		printf("ERROR: invalid IDENTIFIER\n");
@@ -745,7 +764,7 @@ void nonPARAMETROS_FORMAIS() {
 }
 
 void nonPARAMETRO_FORMAL() {
-	if (*lookahead == INT || *lookahead == BOOLEAN) {
+	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
 		next();
 		nonIDENTIFICADOR();
 	}
@@ -756,7 +775,7 @@ void nonCOMANDO() {
 	nonCHAMADA_PROCEDIMENTO();
 	nonCOMANDO_CONDICIONAL();
 	nonCOMANDO_REPETITIVO();
-	if (*lookahead == PRINT) {
+	if (char2int(lookahead) == PRINT) {
 		next();
 		/* TODO: CRIAR FUNCAO PRA IMPRIMIR TABELA DE ESCOPO */
 	}
@@ -768,7 +787,7 @@ void nonATRIBUICAO() {
 		next();
 		nonIDENTIFICADOR();
 		nonEXPRESSAO();
-		if (*lookahead == COMMA) {
+		if (char2int(lookahead) == COMMA) {
 			next();
 			printf("ERROR: expected ;\n");
 		} else {
@@ -783,15 +802,15 @@ void nonCHAMADA_PROCEDIMENTO() {
 }
 
 void nonCOMANDO_CONDICIONAL() {
-	if (*lookahead == IF) {
+	if (char2int(lookahead) == IF) {
 		next();
 		nonEXPRESSAO();
 		nonCOMANDO_COMPOSTO();
-		if (*lookahead == BRACEOPEN) {
-			if (*lookahead == ELSE) {
+		if (char2int(lookahead) == BRACEOPEN) {
+			if (char2int(lookahead) == ELSE) {
 				next();
 				nonCOMANDO_COMPOSTO();
-				if (*lookahead == BRACECLOSE) {
+				if (char2int(lookahead) == BRACECLOSE) {
 					next();
 				} else {
 					printf("ERROR: expected } to open a function block\n");
@@ -804,13 +823,13 @@ void nonCOMANDO_CONDICIONAL() {
 }
 
 void nonCOMANDO_REPETITIVO() {
-	if (*lookahead == WHILE) {
+	if (char2int(lookahead) == WHILE) {
 		next();
 		nonEXPRESSAO();
-		if (*lookahead == BRACEOPEN) {
+		if (char2int(lookahead) == BRACEOPEN) {
 			next();
 			nonCOMANDO_COMPOSTO();
-			if (*lookahead == BRACEOPEN) {
+			if (char2int(lookahead) == BRACEOPEN) {
 				next();
 			} else {
 				printf("ERROR: expected } to open a function block\n");
@@ -826,7 +845,7 @@ void nonEXPRESSAO() {
 }
 
 void nonLISTA_PARAMETROS() {
-	if (*lookahead == IDENTIFIER || *lookahead == POSITIVENUMBER || *lookahead == NEGATIVENUMBER || *lookahead == BOOLEAN) {
+	if (char2int(lookahead) == IDENTIFIER || char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == NEGATIVENUMBER || char2int(lookahead) == BOOLEAN) {
 		next();
 		nonIDENTIFICADOR();
 		nonINT();
@@ -835,7 +854,7 @@ void nonLISTA_PARAMETROS() {
 }
 
 void nonINT() {
-	if (*lookahead == POSITIVENUMBER || *lookahead == NEGATIVENUMBER) {
+	if (char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == NEGATIVENUMBER) {
 		next();
 	} else {
 		printf("ERROR: was expected INT\n");
@@ -843,7 +862,7 @@ void nonINT() {
 }
 
 void nonBOL() {
-	if (*lookahead == BOOLEAN) {
+	if (char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
 		printf("ERROR: was expected BOOLEAN\n");
@@ -851,7 +870,7 @@ void nonBOL() {
 }
 
 void nonEXPRESSAO_SIMPLES() {
-	if (*lookahead == SUM || *lookahead == SUBTRACTION) {
+	if (char2int(lookahead) == SUM || char2int(lookahead) == SUBTRACTION) {
 		next();
 		nonTERMO();
 		nonRELACAO();
@@ -861,7 +880,7 @@ void nonEXPRESSAO_SIMPLES() {
 }
 
 void nonRELACAO() {
-	if (*lookahead == EQUALS || *lookahead == LESSEQUAL || *lookahead == GREATEREQUAL || *lookahead == DIFF || *lookahead == LESSTHAN || *lookahead == GREATERTHAN) {
+	if (char2int(lookahead) == EQUALS || char2int(lookahead) == LESSEQUAL || char2int(lookahead) == GREATEREQUAL || char2int(lookahead) == DIFF || char2int(lookahead) == LESSTHAN || char2int(lookahead) == GREATERTHAN) {
 		next();
 	} else {
 		printf("ERROR: invalid expression\n");
@@ -869,7 +888,7 @@ void nonRELACAO() {
 }
 
 void nonTERMO() {
-	if (*lookahead == MULTIPLICATION ||*lookahead == DIVISION) {
+	if (char2int(lookahead) == MULTIPLICATION ||char2int(lookahead) == DIVISION) {
 		next();
 		nonFATOR();
 	} else {
@@ -879,7 +898,7 @@ void nonTERMO() {
 }
 
 void nonFATOR() {
-	if (*lookahead == IDENTIFIER || *lookahead == NEGATIVENUMBER || *lookahead == POSITIVENUMBER || *lookahead == BOOLEAN) {
+	if (char2int(lookahead) == IDENTIFIER || char2int(lookahead) == NEGATIVENUMBER || char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == BOOLEAN) {
 		next();
 		nonEXPRESSAO_SIMPLES();
 	}
@@ -1013,9 +1032,9 @@ void getToken(TOKEN *t) {
 		(*t).name = token.name;
 		(*t).value = token.value;
 	} else {
-		writeFile(results, strlen(results), "lexical_analysis.txt");
+		writeFile(results, strlen(results), "syntax_analysis.txt");
 		printf("\nLexical analysis SUCESS.\n");
-		printf("\nTokens file writed SUCESS [lexical_analysis.txt]\n\n");
+		printf("\nTokens file writed SUCESS [syntax_analysis.txt]\n\n");
 		(*t).name = END;
 	}
 }
@@ -1024,7 +1043,6 @@ void getFirstToken(){
 	TOKEN token;
 	getToken(&token);
 	lookahead = (char *) malloc( 10 * sizeof(char) );
-	/* Converter o token de int para char* */
 	sprintf(lookahead, "%d", token.name);
 }
 
@@ -1040,7 +1058,7 @@ void next() {
 	strcpy(lookahead, res);
 
 	/* If comment go to next lookahead*/
-	if (lookahead == COMMENTS) {
+	if (char2int(lookahead) == COMMENTS) {
 		next();
 	}
 }
