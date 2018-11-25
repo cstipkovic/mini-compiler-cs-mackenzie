@@ -652,11 +652,10 @@ q97:
 
 /* Function implementation */
 void nonPROGRAMA() {
-	getFirstToken();
+	next();
 	if (char2int(lookahead) == PROGRAM) {
-		next();
-		printf("NEXT: %s\n\n", lookahead);
-		if (char2int(lookahead) == IDENTIFIER) {
+	    next();
+        if (char2int(lookahead) == IDENTIFIER) {
 			next();
 			if (char2int(lookahead) == BRACEOPEN) {
 				next();
@@ -939,15 +938,15 @@ int needValue(char aux[]) {
 
 void readFile(char filename[]) {
 	printf("Reading input file %s\n", filename);
-	FILE *arquivo_entrada;
-	arquivo_entrada = fopen(filename,"r");
+	FILE *file;
+	file = fopen(filename,"r");
 	char line[800];
-	if (arquivo_entrada) {
-		while (fscanf(arquivo_entrada,"%s ", line) != EOF) {
+	if (file) {
+		while (fscanf(file,"%s ", line) != EOF) {
 			strcat(line, " ");
 			strcat(txt,line);
 		}
-		fclose(arquivo_entrada);
+		fclose(file);
 	} else {
 		printf("\nFile not found.\n");
 		exit(0);
@@ -984,29 +983,6 @@ void writeFile(char result[], int pos, char filename[]) {
 	fclose(outputFile);
 }
 
-char* getValue(char text[], int pos) {
-	char *value;
-	int i, j, count;
-
-	count = 0;
-
-	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
-		count++;
-	}
-
-	value = malloc(2 * count * sizeof(char));
-	j = 0;
-
-	for (i = pos - 2; text[i] != ' ' && i >= 0; i--) {
-		value[j] = text[i - count + 1 + (2 * j)];
-		j++;
-	}
-
-	printf("Value: %s\n", value);
-
-	return value;
-}
-
 void getToken(TOKEN *t) {
 	char res[800];
 	int pos = 0;
@@ -1017,14 +993,13 @@ void getToken(TOKEN *t) {
 		strcat(results, res);
 		strcat(results, " ");
 		strcpy(res, "");
-
 		if (token.value != NULL) {
 			strcat(results, token.value);
 			strcat(results, " ");
 		}
 
 		if (token.name == ERROR ) {
-			printf("ERRO LEXICO\n");
+			printf("Lexical ERROR\n");
 			printf("%s\n",results);
 			exit(0);
 		}
@@ -1037,13 +1012,6 @@ void getToken(TOKEN *t) {
 		printf("\nTokens file writed SUCESS [syntax_analysis.txt]\n\n");
 		(*t).name = END;
 	}
-}
-
-void getFirstToken(){
-	TOKEN token;
-	getToken(&token);
-	lookahead = (char *) malloc( 10 * sizeof(char) );
-	sprintf(lookahead, "%d", token.name);
 }
 
 void next() {
@@ -1088,5 +1056,12 @@ int main(int argc, char *argv[]) {
 	lexical();
 	syntax();
 
-	return 0;
+    printf("TXT:\n %s", txt);
+    printf("\n");
+
+    printf("RESULTS:\n%s", results);
+    printf("\n");
+
+
+    return 0;
 }
