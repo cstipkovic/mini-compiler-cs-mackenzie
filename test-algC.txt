@@ -5,6 +5,9 @@ program _correto {
 	void _proc ( int _arg ) {
 		int _a ;
 		_a = 1 ;
+		if ( _a < 1 ) {
+			_a = 12 ;
+		}
 	}
 }
 

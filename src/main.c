@@ -785,7 +785,7 @@ void nonIDENTIFICADOR() {
 			/*next();*/
 			nonBLOCO();
 		} else {
-			if (!char2int(lookahead) == END) {
+			if (char2int(lookahead) != END) {
 				printf("ERROR: invalid IDENTIFIER\n");
 			}
 		}
