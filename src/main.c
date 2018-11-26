@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#include "constants.h"
+
 /* Struct do token */
 typedef struct token {
 	int name;
@@ -20,49 +23,14 @@ typedef struct simbols {
 	char* value;
 } SIMBOLS;
 
-/* Global variables*/
+/* Variaveis Globais*/
 char *lookahead;
 char *txt;
 char *results;
 int pos = 0;
 
-/* Constants codes */
-#define IDENTIFIER       1000
-#define BOOLEAN          1001
-#define WHILE            1002
-#define PROGRAM          1003
-#define PRINT            1004
-#define VOID             1005
-#define IF               1006
-#define INT              1007
-#define TRUE_            1008
-#define FALSE_           1009
-#define ELSE             1010
-#define COMMENTS         1011
-#define DIVISION         1012
-#define SUBTRACTION      1013
-#define SUM              1014
-#define MULTIPLICATION   1015
-#define LESSTHAN         1016
-#define LESSEQUAL        1017
-#define GREATERTHAN      1018
-#define GREATEREQUAL     1019
-#define EQUALS           1020
-#define DIFF             1021
-#define COMMA            1022
-#define SEMICOLON        1023
-#define PARENTHESISOPEN  1024
-#define PARENTHESISCLOSE 1025
-#define BRACEOPEN        1026
-#define BRACECLOSE       1027
-#define POSITIVENUMBER   1028
-#define NEGATIVENUMBER   1029
-#define ASSIGNMENT       1030
-#define ERROR            404
-#define END				 999
-
-/* non-terminal functions */
-/* Syntax */
+/* funcoes nao terminais (non-terminal) */
+/* Sintaxe */
 void nonPROGRAMA();
 void nonBLOCO();
 void nonPARTE_DECLARACOES_VARIAVEIS();
@@ -74,12 +42,14 @@ void nonDECLARACAO_VARIAVEIS();
 void nonDECLARACAO_FUNCOES();
 void nonTIPO();
 void nonLISTA_IDENTIFICADORES();
+void nonRESTO_IDENTIFICADORES();
 void nonIDENTIFICADOR();
 void nonPARAMETROS_FORMAIS();
 void nonPARAMETRO_FORMAL();
 
-/* Commands */
+/* Comandos */
 void nonCOMANDO();
+void nonRESTO_COMANDOS();
 void nonATRIBUICAO();
 void nonCHAMADA_PROCEDIMENTO();
 void nonCOMANDO_CONDICIONAL();
@@ -89,13 +59,13 @@ void nonLISTA_PARAMETROS();
 void nonINT();
 void nonBOL();
 
-/* Expressions */
+/* Expressoes */
 void nonEXPRESSAO_SIMPLES();
 void nonRELACAO();
 void nonTERMO();
 void nonFATOR();
 
-/* Validation functions */
+/* Funcoes de validacao */
 
 /*
  * int isINT();          -> using function isNumber to validate it.
@@ -103,29 +73,33 @@ void nonFATOR();
  * int isLETRA(char c);  -> using function isLetter to validate it.
  */
 
-/* Extra functions to help at validations */
+/* Funcoes extras para ajudar nas validacoes */
 int isNumber(char n);
 int isLetter(char c);
 int char2int(char *c);
 void getFirstToken();
 void next();
 
+/* Converte o TOKEN char para o inteiro do TOKEN (constante) */
 int char2int(char *c) {
 	int i;
 	int value = 0;
+
 	for (i = 0; i < strlen(c); i++) {
 		int len = strlen(c);
 		int t = 1;
+
 		while ((len - i) > 1) {
 			t *= 10;
 			len--;
 		}
 		value += t * (lookahead[i] - 48);
 	}
+
 	return value;
 }
 
-/* Retorna a saida da entrada segundo especificacao do automato*/
+/* Retorna o TOKEN segundo a entrada especificada no automato */
 TOKEN scanner(char text[], int *pos) {
 	TOKEN token;
 	token.name = ERROR;
@@ -661,16 +635,15 @@ q97:
 void nonPROGRAMA() {
 	next();
 	if (char2int(lookahead) == PROGRAM) {
-	    next();
-        if (char2int(lookahead) == IDENTIFIER) {
-        	/* TODO: INSERIR NA TABELA DE SIMBOLOS*/
+		next();
+		if (char2int(lookahead) == IDENTIFIER) {
+			/* TODO: INSERIR NA TABELA DE SIMBOLOS */
 			next();
 			if (char2int(lookahead) == BRACEOPEN) {
 				next();
-				printf("Call BLK\n");
 				nonBLOCO();
-				nonIDENTIFICADOR();
 				if (char2int(lookahead) == BRACECLOSE) {
+                    /* TODO: Remover tabela de simbolos */
 					next();
 					if (char2int(lookahead) == END) {
 						printf("SUCCESS\n");
@@ -680,29 +653,18 @@ void nonPROGRAMA() {
 				} else {
 					printf("ERROR: expected } to close a function block\n");
 				}
-			} else {
-				printf("ERROR: expected { to open a function block\n");
-			}
-		} else {
-			printf("ERROR: after PROGRAM declaration an identifier is not defined\n");
-		}
-	} else {
-		printf("ERROR: invalid PROGRAM begin declaration\n");
-	}
+			} else printf("ERROR: expected { to open a function block\n");
+		} else printf("ERROR: after PROGRAM declaration an identifier is not defined\n");
+	} else printf("ERROR: invalid PROGRAM begin declaration\n");
 }
 
 void nonBLOCO() {
-	/*TODO: rever onde faz chamada recursiva pra resolver problema*/
-	printf("Call PDV\n");
+	/* TODO: rever onde faz chamada recursiva pra resolver problema */
 	nonPARTE_DECLARACOES_VARIAVEIS();
-	printf("Call PDF\n");
 	nonPARTE_DECLARACOES_FUNCOES();
-	printf("COMANDO_COMPOSTO\n");
-	nonCOMANDO_COMPOSTO();
 }
 
 void nonPARTE_DECLARACOES_VARIAVEIS() {
-	printf("Call DV\n");
 	nonDECLARACAO_VARIAVEIS();
 }
 
@@ -714,16 +676,19 @@ void nonPARTE_DECLARACOES_FUNCOES() {
 
 void nonCOMANDO_COMPOSTO() {
 	nonCOMANDO();
+    nonRESTO_COMANDOS();
 }
 
 void nonDECLARACAO_VARIAVEIS() {
-	printf("DV\n");
-	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN || char2int(lookahead) == IDENTIFIER ) {
-		printf("TP\n");
-		nonTIPO();
-		printf("LI\n");
-		nonLISTA_IDENTIFICADORES();
-	}
+    if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
+        nonTIPO();
+        nonLISTA_IDENTIFICADORES();
+        
+        if (char2int(lookahead) == SEMICOLON) {
+            next();
+            nonBLOCO();
+        } else printf("ERROR: invalid IDENTIFIER\n");
+    }
 }
 
 void nonDECLARACAO_FUNCOES() {
@@ -737,6 +702,7 @@ void nonDECLARACAO_FUNCOES() {
 				next();
 				if (char2int(lookahead) == BRACEOPEN) {
 					next();
+                    nonCOMANDO_COMPOSTO();
 					if (char2int(lookahead) == BRACECLOSE) {
 						next();
 					} else {
@@ -757,51 +723,59 @@ void nonDECLARACAO_FUNCOES() {
 }
 
 void nonTIPO() {
-	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN) {
-		next();
-	} else {
-		/* TODO: verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro */
-		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
-	}
+    if (char2int(lookahead) == BOOLEAN) {
+        next();
+    } else if (char2int(lookahead) == INT) {
+        next();
+    } else printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
+    /* TODO: verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro */
 }
 
 void nonLISTA_IDENTIFICADORES() {
-	printf("LI_\n");
-	/* TODO: LISTA DE SIMBOLOS*/
-	nonIDENTIFICADOR();
+    if (char2int(lookahead) == IDENTIFIER) {
+        /* TODO: Adicionar na lista de simbolos */
+        next();
+        nonRESTO_IDENTIFICADORES();
+    } else printf("ERROR: invalid IDENTIFIER\n");
+}
+
+void nonRESTO_IDENTIFICADORES() {
+    if (char2int(lookahead) == COMMA) {
+        next();
+        if (char2int(lookahead) == IDENTIFIER) {
+            /* TODO: Adicionar na lista de simbolos */
+            next();
+            nonRESTO_IDENTIFICADORES();
+        } else printf("ERROR: invalid IDENTIFIER\n");
+    }
 }
 
 void nonIDENTIFICADOR() {
 	if (char2int(lookahead) == IDENTIFIER) {
 		next();
-		if (char2int(lookahead) == COMMA) {
-			next();
-			nonIDENTIFICADOR();
-		}
+        if (char2int(lookahead) == BRACEOPEN) {
+            next();
+        } else if (char2int(lookahead) == COMMA) {
+            next();
+            nonIDENTIFICADOR();
+        } else if (char2int(lookahead) == SEMICOLON) {
+            next();
+            
+        } else if (char2int(lookahead) == ASSIGNMENT) {
+            next();
+        }
+    } else printf("ERROR: invalid IDENTIFIER\n");
 
-		if (char2int(lookahead) == BRACEOPEN) {
-			next();
-		}
+//    if  {
+//        /* TODO: Incluir o next() para adicionar o valor na tabela de valores */
+//        next();
+//        /* TODO: Checar se o valor condis com o tipo declarado, caso contrario laçar erro */
+//        next();
+//    }
 
-		if (char2int(lookahead) == ASSIGNMENT) {
-			/* TODO: Incluir o next() para adicionar o valor na tabela de valores */
-			next();
-			/* TODO: Checar se o valor condis com o tipo declarado, caso contrario laçar erro */
-			next();
-		}
-
-		if (char2int(lookahead) == SEMICOLON) {
-			next();
-
-		}
-
-		if (char2int(lookahead) == PARENTHESISOPEN) {
-			next();
-		}
-
-	} else {
-		printf("ERROR: invalid IDENTIFIER\n");
-	}
+//    if (char2int(lookahead) == PARENTHESISOPEN) {
+//        next();
+//    }
 
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 }
@@ -828,6 +802,15 @@ void nonCOMANDO() {
 	}
 }
 
+void nonRESTO_COMANDOS() {
+    if (char2int(lookahead) == IDENTIFIER ||
+        char2int(lookahead) == IF ||
+        char2int(lookahead) == WHILE) {
+        nonCOMANDO();
+        nonRESTO_COMANDOS();
+    }
+}
+
 void nonATRIBUICAO() {
 	if (char2int(lookahead) == ASSIGNMENT) {
 		next();
@@ -835,7 +818,7 @@ void nonATRIBUICAO() {
 		nonEXPRESSAO();
 		if (char2int(lookahead) == COMMA) {
 			next();
-			printf("ERROR: expected ;\n");
+			printf("ERROR: expected;\n");
 		} else {
 
 		}
@@ -922,12 +905,20 @@ void nonEXPRESSAO() {
 }
 
 void nonLISTA_PARAMETROS() {
-	if (char2int(lookahead) == IDENTIFIER || char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == NEGATIVENUMBER || char2int(lookahead) == BOOLEAN) {
-		next();
+    /* Identifica variaveis do tipo inteiro (positivas ou negativas) */
+	if (char2int(lookahead) == IDENTIFIER ||
+        char2int(lookahead) == POSITIVENUMBER ||
+        char2int(lookahead) == NEGATIVENUMBER) {
+        
 		nonIDENTIFICADOR();
 		nonINT();
-		nonBOL();
 	}
+    
+    /* Identifica variveis booleanas */
+    if (char2int(lookahead) == BOOLEAN) {
+        next();
+        nonBOL();
+    }
 }
 
 void nonINT() {
@@ -947,7 +938,7 @@ void nonBOL() {
 }
 
 void nonEXPRESSAO_SIMPLES() {
-		nonTERMO();
+	nonTERMO();
 }
 
 void nonRELACAO() {
@@ -980,7 +971,7 @@ int isNumber(char n) {
 	return 0;
 }
 
-/* Verifica se entrada é uma letra de A-z */
+/* Verifica se o parametro é um caractere valido na tabela ascii [a-z] = [97-122] e [A-Z] = [65-90] */
 int isLetter(char c) {
 	int a = (int) c;
 	if ((a > 96 && a < 123) || (a > 64 && a < 91)) {
@@ -1003,16 +994,19 @@ int needValue(char aux[]) {
 	return 0;
 }
 
+/* Leitura das linhas Arquivo de input com codigo */
 void readFile(char filename[]) {
-	printf("Reading input file %s\n", filename);
+	printf("Reading input file %s\n\n", filename);
 	FILE *file;
-	file = fopen(filename,"r");
+	file = fopen(filename, "r");
 	char line[80];
+
 	if (file) {
-		while (fscanf(file,"%s ", line) != EOF) {
+		while (fscanf(file, "%s ", line) != EOF) {
 			strcat(line, " ");
-			strcat(txt,line);
+			strcat(txt, line);
 		}
+
 		fclose(file);
 	} else {
 		printf("\nFile not found.\n");
@@ -1020,12 +1014,11 @@ void readFile(char filename[]) {
 	}
 }
 
-
 /* Escreve os resultados no arquivo de saida */
 void writeFile(char result[], int pos, char filename[]) {
 	int i, j, k;
 	j = 0;
-	char aux[10];
+	char aux[100];
 
 	for (i = 0; i < pos; i++) {
 		aux[j] = result[i];
@@ -1050,12 +1043,11 @@ void writeFile(char result[], int pos, char filename[]) {
 	fclose(outputFile);
 }
 
-
-/* Lê o próximo token da da entrada*/
+/* Lê o próximo token da entrada */
 void getToken(TOKEN *t) {
-	char res[80];
-
+	char res[800];
 	TOKEN token;
+    
 	if (pos < strlen(txt)) {
 		token = scanner(txt, &pos);
 		sprintf(res, "%d", token.name);
@@ -1069,7 +1061,7 @@ void getToken(TOKEN *t) {
 
 		if (token.name == ERROR ) {
 			printf("Lexical ERROR\n");
-			printf("%s\n",results);
+            printf("%s\n", results);
 			exit(0);
 		}
 
@@ -1084,8 +1076,9 @@ void getToken(TOKEN *t) {
 	}
 }
 
+/* Faz a navegacao para o proximo TOKEN na leitura */
 void next() {
-	char res[10];
+	char res[100];
 	int len;
 	TOKEN token;
 	getToken(&token);
@@ -1095,12 +1088,13 @@ void next() {
 	lookahead = (char *) malloc(len * sizeof(char));
 	strcpy(lookahead, res);
 
-	/* If comment go to next lookahead*/
+	/* Se for um comentario, vai para o proximo TOKEN */
 	if (char2int(lookahead) == COMMENTS) {
 		next();
 	}
 }
 
+/* Funcao de chamada do analizador lexico */
 void lexical() {
 	int i;
 	int len = 80;
@@ -1118,20 +1112,21 @@ void lexical() {
 	readFile("test-algC.txt");
 }
 
+/* Funcao de chamada do analizador sintatico */
 void syntax() {
 	nonPROGRAMA();
 }
 
+/* Funcao principal, onde sao chamados os analizadores lexico e sintatico */
 int main(int argc, char *argv[]) {
 	lexical();
 	syntax();
-/*
-    printf("TXT:\n %s", txt);
-    printf("\n");
-*/
-    printf("RESULTS:\n%s", results);
-    printf("\n");
 
+	/*printf("TXT:\n %s", txt);*/
+	/*printf("\n");*/
 
-    return 0;
+	printf("RESULTS:\n %s ", results);
+	printf("\n");
+
+	return 0;
 }

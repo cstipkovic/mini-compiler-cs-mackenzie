@@ -1,4 +1,4 @@
 main: clean
-	gcc -ansi -o main ./src/main.c -g
+	gcc -I./src/constants.h ./src/main.c -ansi -o main
 clean:
 	rm -rf main

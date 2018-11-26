@@ -1,3 +1,4 @@
 program _correto {
-	int _a ;
+	int _a , _b , _c ;
+	bool _d , _e , _f ;
 }
