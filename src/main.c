@@ -14,6 +14,12 @@ typedef struct token {
 	char* value;
 } TOKEN;
 
+typedef struct simbols {
+	char* type;
+	char* name;
+	char* value;
+} SIMBOLS;
+
 /* Global variables*/
 char *lookahead;
 char *txt;
@@ -21,16 +27,16 @@ char *results;
 int pos = 0;
 
 /* Constants codes */
-#define IDENTIFIER       10240
-#define BOOLEAN          10241
-#define WHILE            10242
-#define PROGRAM          10243
-#define PRINT            10244
-#define VOID             10245
-#define IF               10246
-#define INT              10247
-#define TRUE_            10248
-#define FALSE_           10249
+#define IDENTIFIER       1000
+#define BOOLEAN          1001
+#define WHILE            1002
+#define PROGRAM          1003
+#define PRINT            1004
+#define VOID             1005
+#define IF               1006
+#define INT              1007
+#define TRUE_            1008
+#define FALSE_           1009
 #define ELSE             1010
 #define COMMENTS         1011
 #define DIVISION         1012
@@ -657,10 +663,13 @@ void nonPROGRAMA() {
 	if (char2int(lookahead) == PROGRAM) {
 	    next();
         if (char2int(lookahead) == IDENTIFIER) {
+        	/* TODO: INSERIR NA TABELA DE SIMBOLOS*/
 			next();
 			if (char2int(lookahead) == BRACEOPEN) {
 				next();
+				printf("Call BLK\n");
 				nonBLOCO();
+				nonIDENTIFICADOR();
 				if (char2int(lookahead) == BRACECLOSE) {
 					next();
 					if (char2int(lookahead) == END) {
@@ -683,13 +692,17 @@ void nonPROGRAMA() {
 }
 
 void nonBLOCO() {
+	/*TODO: rever onde faz chamada recursiva pra resolver problema*/
+	printf("Call PDV\n");
 	nonPARTE_DECLARACOES_VARIAVEIS();
+	printf("Call PDF\n");
 	nonPARTE_DECLARACOES_FUNCOES();
+	printf("COMANDO_COMPOSTO\n");
 	nonCOMANDO_COMPOSTO();
-
 }
 
 void nonPARTE_DECLARACOES_VARIAVEIS() {
+	printf("Call DV\n");
 	nonDECLARACAO_VARIAVEIS();
 }
 
@@ -704,8 +717,11 @@ void nonCOMANDO_COMPOSTO() {
 }
 
 void nonDECLARACAO_VARIAVEIS() {
+	printf("DV\n");
 	if (char2int(lookahead) == INT || char2int(lookahead) == BOOLEAN || char2int(lookahead) == IDENTIFIER ) {
+		printf("TP\n");
 		nonTIPO();
+		printf("LI\n");
 		nonLISTA_IDENTIFICADORES();
 	}
 }
@@ -721,7 +737,6 @@ void nonDECLARACAO_FUNCOES() {
 				next();
 				if (char2int(lookahead) == BRACEOPEN) {
 					next();
-					nonBLOCO();
 					if (char2int(lookahead) == BRACECLOSE) {
 						next();
 					} else {
@@ -746,12 +761,13 @@ void nonTIPO() {
 		next();
 	} else {
 		/* TODO: verificar se a variavel já está na tabela de simbolos, caso não esteja lace erro */
-		printf("t: %s\n", lookahead);
 		printf("ERROR: type isn't defined {INT | BOOLEAN}\n");
 	}
 }
 
 void nonLISTA_IDENTIFICADORES() {
+	printf("LI_\n");
+	/* TODO: LISTA DE SIMBOLOS*/
 	nonIDENTIFICADOR();
 }
 
@@ -763,9 +779,8 @@ void nonIDENTIFICADOR() {
 			nonIDENTIFICADOR();
 		}
 
-		if (char2int(lookahead) == BRACEOPEN || char2int(lookahead) == BRACECLOSE) {
-			/*next();*/
-			nonBLOCO();
+		if (char2int(lookahead) == BRACEOPEN) {
+			next();
 		}
 
 		if (char2int(lookahead) == ASSIGNMENT) {
@@ -777,18 +792,17 @@ void nonIDENTIFICADOR() {
 
 		if (char2int(lookahead) == SEMICOLON) {
 			next();
-			nonBLOCO();
+
 		}
 
-		if (char2int(lookahead) == PARENTHESISOPEN || char2int(lookahead) == PARENTHESISCLOSE) {
-			/*next();*/
-			nonBLOCO();
-		} else {
-			if (char2int(lookahead) != END) {
-				printf("ERROR: invalid IDENTIFIER\n");
-			}
+		if (char2int(lookahead) == PARENTHESISOPEN) {
+			next();
 		}
+
+	} else {
+		printf("ERROR: invalid IDENTIFIER\n");
 	}
+
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 }
 
@@ -833,21 +847,6 @@ void nonCHAMADA_PROCEDIMENTO() {
 	nonLISTA_PARAMETROS();
 }
 
-/* Avalia abertura e fechamento de chaves para o bloco IF e/ou ELSE */
-void auxAVALIA_BLOCO_COMPOSTO() {
-	if (char2int(lookahead) == BRACEOPEN) {
-		next();
-		nonCOMANDO_COMPOSTO();
-		if (char2int(lookahead) == BRACECLOSE) {
-			next();
-		} else {
-			printf("ERROR: expected } to close a function block\n");
-		}
-	} else {
-		printf("ERROR: expected { to open a function block\n");
-	}
-}
-
 /* Avalia comando condicional IF/ELSE */
 void nonCOMANDO_CONDICIONAL() {
 	if (char2int(lookahead) == IF) {
@@ -857,7 +856,38 @@ void nonCOMANDO_CONDICIONAL() {
 			nonEXPRESSAO();
 			if (char2int(lookahead) == PARENTHESISCLOSE) {
 				next();
-				auxAVALIA_BLOCO_COMPOSTO();
+				if (char2int(lookahead) == BRACEOPEN) {
+					next();
+					nonCOMANDO_COMPOSTO();
+					if (char2int(lookahead) == BRACECLOSE) {
+						next();
+						if (char2int(lookahead) == ELSE) {
+							next();
+							if (char2int(lookahead) == BRACEOPEN) {
+								next();
+								nonCOMANDO_COMPOSTO();
+								if (char2int(lookahead) == BRACECLOSE) {
+									next();
+									/* PARA ONDE IR ? */
+									nonBLOCO();
+								} else {
+									printf("ERROR: expected } to close a function block\n");
+								}
+							} else {
+								printf("ERROR: expected { to open a function block\n");
+							}
+						} else {
+							/* IF SEM ELSE*/
+							/* PARA ONDE IR ? */
+							next();
+							nonBLOCO();
+						}
+					} else {
+						printf("ERROR: expected } to close a function block\n");
+					}
+				} else {
+					printf("ERROR: expected { to open a function block\n");
+				}
 			} else {
 				printf("ERROR: expected ) to close a function block\n");
 			}
@@ -865,13 +895,6 @@ void nonCOMANDO_CONDICIONAL() {
 			printf("ERROR: expected ( to open a function block\n");
 		}
 	}
-
-	if (char2int(lookahead) == ELSE) {
-		next();
-		auxAVALIA_BLOCO_COMPOSTO();
-	}
-
-	nonBLOCO();
 }
 
 void nonCOMANDO_REPETITIVO() {
@@ -911,7 +934,6 @@ void nonINT() {
 	if (char2int(lookahead) == POSITIVENUMBER || char2int(lookahead) == NEGATIVENUMBER) {
 		next();
 	} else {
-		printf("t: %s\n", lookahead);
 		printf("ERROR: was expected INT\n");
 	}
 }
@@ -920,7 +942,6 @@ void nonBOL() {
 	if (char2int(lookahead) == BOOLEAN) {
 		next();
 	} else {
-		printf("t: %s\n", lookahead);
 		printf("ERROR: was expected BOOLEAN\n");
 	}
 }
@@ -986,7 +1007,7 @@ void readFile(char filename[]) {
 	printf("Reading input file %s\n", filename);
 	FILE *file;
 	file = fopen(filename,"r");
-	char line[1024];
+	char line[80];
 	if (file) {
 		while (fscanf(file,"%s ", line) != EOF) {
 			strcat(line, " ");
@@ -1004,7 +1025,7 @@ void readFile(char filename[]) {
 void writeFile(char result[], int pos, char filename[]) {
 	int i, j, k;
 	j = 0;
-	char aux[1024];
+	char aux[10];
 
 	for (i = 0; i < pos; i++) {
 		aux[j] = result[i];
@@ -1032,7 +1053,7 @@ void writeFile(char result[], int pos, char filename[]) {
 
 /* Lê o próximo token da da entrada*/
 void getToken(TOKEN *t) {
-	char res[1024];
+	char res[80];
 
 	TOKEN token;
 	if (pos < strlen(txt)) {
@@ -1064,7 +1085,7 @@ void getToken(TOKEN *t) {
 }
 
 void next() {
-	char res[1024];
+	char res[10];
 	int len;
 	TOKEN token;
 	getToken(&token);
@@ -1082,7 +1103,7 @@ void next() {
 
 void lexical() {
 	int i;
-	int len = 1024;
+	int len = 80;
 	int pos = 0;
 
 	txt = (char *) malloc(len * sizeof(char));
@@ -1104,10 +1125,10 @@ void syntax() {
 int main(int argc, char *argv[]) {
 	lexical();
 	syntax();
-
+/*
     printf("TXT:\n %s", txt);
     printf("\n");
-
+*/
     printf("RESULTS:\n%s", results);
     printf("\n");
 

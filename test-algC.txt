@@ -1,13 +1,3 @@
 program _correto {
-	int _a , _b , _c ;
-	bool _d , _e , _f ;
-
-	void _proc ( int _arg ) {
-		int _a ;
-		_a = 1 ;
-		if ( _a < 1 ) {
-			_a = 12 ;
-		}
-	}
+	int _a ;
 }
-
