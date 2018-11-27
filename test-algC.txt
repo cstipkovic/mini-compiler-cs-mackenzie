@@ -1,4 +1,8 @@
 program _correto {
 	int _a , _b , _c ;
 	bool _d , _e , _f ;
+
+	void _proc ( ) {
+		int _a ;
+	}
 }

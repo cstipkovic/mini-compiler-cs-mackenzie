@@ -705,21 +705,11 @@ void nonDECLARACAO_FUNCOES() {
                     nonCOMANDO_COMPOSTO();
 					if (char2int(lookahead) == BRACECLOSE) {
 						next();
-					} else {
-						printf("ERROR: expected } to close a function block\n");
-					}
-				} else {
-					printf("ERROR: expected { to open a function block\n");
-				}
-			} else {
-				printf("ERROR: expected ) to paramenters function\n");
-			}
-		} else {
-			printf("ERROR: expected ( to open a function block\n");
-		}
-	} else {
-		printf("ERROR: expected VOID to function definition\n");
-	}
+					} else printf("ERROR: expected } to close a function block\n");
+				} else printf("ERROR: expected { to open a function block\n");
+			} else printf("ERROR: expected ) to paramenters function\n");
+		} else printf("ERROR: expected ( to open a function block\n");
+	} else printf("ERROR: expected VOID to function definition\n");
 }
 
 void nonTIPO() {
@@ -750,33 +740,30 @@ void nonRESTO_IDENTIFICADORES() {
     }
 }
 
+int eIdentificador() {
+    if (char2int(lookahead) == IDENTIFIER) {
+        return 1;
+    }
+    
+    return 0;
+}
+
 void nonIDENTIFICADOR() {
 	if (char2int(lookahead) == IDENTIFIER) {
 		next();
-        if (char2int(lookahead) == BRACEOPEN) {
+        if (char2int(lookahead) == PARENTHESISOPEN) {
             next();
         } else if (char2int(lookahead) == COMMA) {
             next();
             nonIDENTIFICADOR();
         } else if (char2int(lookahead) == SEMICOLON) {
             next();
-            
+
         } else if (char2int(lookahead) == ASSIGNMENT) {
             next();
         }
     } else printf("ERROR: invalid IDENTIFIER\n");
-
-//    if  {
-//        /* TODO: Incluir o next() para adicionar o valor na tabela de valores */
-//        next();
-//        /* TODO: Checar se o valor condis com o tipo declarado, caso contrario laçar erro */
-//        next();
-//    }
-
-//    if (char2int(lookahead) == PARENTHESISOPEN) {
-//        next();
-//    }
-
+    
 	/* ADICIONAR IDENTIFICADOR EM UM ARRAY E CONTRORLAR O ESCOPO, PARA IMPRESSAO */
 }
 
